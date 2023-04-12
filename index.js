@@ -21,24 +21,26 @@ app.get('/', (req, res) => {
     res.send({title: 'Books'})
 })
 
-app.get('/add-note', async (req, res) => {
+app.get('/add', async (req, res) => {
    try {
     await Book.insertMany([
         {
-            title:'Swapnil Is best',
+            title:'New Is best',
             body:"something is here"
         },
         {
-            title:'Swapnil Is Awesome',
+            title:'New Is Awesome',
             body:"something Awesome is here"
         },
     ])
+
+    res.send('Books Added...')
    } catch (error) {
     console.log("Err" , + error)
    }
 })
 
-app.get('/books', async (req,res)=>{
+app.get('/data', async (req,res)=>{
     const book= await Book.find();
 
     if(book){
