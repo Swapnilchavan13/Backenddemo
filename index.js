@@ -71,6 +71,21 @@ app.post('/data', async (req, res) => {
     }
 });
 
+app.post('/auth', async (req, res) => {
+    try {
+        const auth = new Auth({
+            mobile: req.body.mobile,
+            adhar: req.body.adhar,
+            otp:req.body.otp,
+        });
+        await auth.save();
+        res.json(auth);
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+});
+
 //delete by id
 
 app.delete('/data/:_id', async (req, res) => {
