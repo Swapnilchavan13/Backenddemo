@@ -54,19 +54,6 @@ app.get('/data/:id', async (req, res) => {
     }
 });
 
-app.delete('/data/:id', async (req, res) => {
-    try {
-        const book = await Book.findById(req.params.id);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-        await book.remove();
-        res.json({ message: 'Book removed successfully' });
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-});
 
 
 // Route to add a new book
