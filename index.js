@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const Book = require('./models/books');
 
 const app = express();
@@ -20,6 +21,9 @@ const connectDB = async () => {
 
 // parse application/json
 app.use(express.json());
+
+// Add cors middleware
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send({title: 'Backend is Runnning...'});
