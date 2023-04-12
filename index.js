@@ -88,8 +88,14 @@ app.post('/auth', async (req, res) => {
 });
 
 
-app.get('/auth', (req, res) => {
-    res.send({title: 'Auth is Runnning...'});
+app.get('/auth', async (req,res) => {
+    const auth = await Auth.find();
+
+    if (auth) {
+        res.json(auth);
+    } else {
+        res.send("Something Went wrong.");
+    }
 });
 
 //delete by id
