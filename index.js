@@ -31,7 +31,6 @@ app.get('/', (req, res) => {
 
 
 app.get('/data', async (req,res) => {
-});
     const book = await Book.find();
 
     if (book) {
@@ -39,6 +38,7 @@ app.get('/data', async (req,res) => {
     } else {
         res.send("Something Went wrong.");
     }
+});
 
 // Route to get book by id
 app.get('/data/:id', async (req, res) => {
@@ -53,8 +53,6 @@ app.get('/data/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
-
 
 // Route to add a new book
 app.post('/data', async (req, res) => {
