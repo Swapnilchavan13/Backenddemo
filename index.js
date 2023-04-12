@@ -71,6 +71,23 @@ app.post('/data', async (req, res) => {
     }
 });
 
+//delete by id
+
+app.delete('/data/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id);
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+        await book.remove();
+        res.json({ message: 'Book removed successfully' });
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 connectDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Listening on port ${PORT}`);
