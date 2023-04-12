@@ -75,7 +75,7 @@ app.post('/data', async (req, res) => {
 
 app.delete('/data/:id', async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id);
+        const book = await Book.findById(req.params._id);
         if (!book) {
             return res.status(404).send('Book not found');
         }
