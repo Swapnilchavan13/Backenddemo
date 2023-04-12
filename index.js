@@ -22,7 +22,7 @@ const connectDB = async () => {
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send({title: 'Books'});
+    res.send({title: 'Backend is Runnning...'});
 });
 
 
