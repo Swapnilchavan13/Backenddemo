@@ -29,24 +29,6 @@ app.get('/', (req, res) => {
     res.send({title: 'Books'});
 });
 
-app.get('/add', async (req, res) => {
-    try {
-        await Book.insertMany([
-            {
-                title:'New Is best',
-                body:"something is here"
-            },
-            {
-                title:'New Is Awesome',
-                body:"something Awesome is here"
-            },
-        ]);
-
-        res.send('Books Added...');
-    } catch (error) {
-        console.log("Err", + error);
-    }
-});
 
 app.get('/data', async (req,res) => {
     const book = await Book.find();
@@ -77,7 +59,9 @@ app.post('/data', async (req, res) => {
     try {
         const book = new Book({
             title: req.body.title,
-            body: req.body.body
+            body: req.body.body,
+            discription: req.body.discription,
+            image:req.body.image
         });
         await book.save();
         res.json(book);

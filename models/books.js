@@ -10,6 +10,14 @@ const Bookschema = new Schema({
     body:{
         type:String,
         required:true,
+    },
+    discription:{
+        type:String,
+        required:true,
+    },
+    image:{
+        type:Image,
+        required:true,
     }
 })
 module.exports = mongoose.model("Book", Bookschema)
