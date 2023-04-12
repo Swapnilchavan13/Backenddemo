@@ -3,7 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Book = require('./models/books');
-const Auth = require('./models/auths')
+const Auth = require('./models/auths');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -72,30 +73,8 @@ app.post('/data', async (req, res) => {
     }
 });
 
-app.post('/auth', async (req, res) => {
-    try {
-        const auth = new Auth({
-            mobile: req.body.mobile,
-            adhar: req.body.adhar,
-            otp:req.body.otp,
-        });
-        await auth.save();
-        res.json(auth);
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-});
-
-
-app.get('/auth', async (req,res) => {
-    const auth = await Auth.find();
-
-    if (auth) {
-        res.json(auth);
-    } else {
-        res.send("Something Went wrong.");
-    }
+app.get('/auth',(req, res) => {
+    res.send({title: 'Auth is Runnning...'});
 });
 
 //delete by id
