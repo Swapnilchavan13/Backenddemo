@@ -73,7 +73,7 @@ app.post('/data', async (req, res) => {
 
 //delete by id
 
-app.delete('/data/:id', async (req, res) => {
+app.delete('/data/:_id', async (req, res) => {
     try {
         const book = await Book.findById(req.params._id);
         if (!book) {
