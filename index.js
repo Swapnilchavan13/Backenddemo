@@ -52,7 +52,7 @@ app.get('/data', async (req,res)=>{
 })
 
 // Route to get book by id
-app.get('/books/:id', async (req, res) => {
+app.get('/data/:id', async (req, res) => {
     try {
         const book = await Book.findById(req.params.id);
         if (!book) {
