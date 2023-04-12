@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const Book = require('./models/books');
 
 const app = express();
@@ -21,9 +20,6 @@ const connectDB = async () => {
 
 // parse application/json
 app.use(express.json());
-
-// Allow Cross-Origin Resource Sharing (CORS)
-app.use(cors());
 
 app.get('/', (req, res) => {
     res.send({title: 'Books'});
