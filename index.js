@@ -1,7 +1,6 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors'); // Import the cors middleware
 const Book = require('./models/books');
 
 const app = express();
@@ -28,7 +27,6 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send({title: 'Books'});
 });
-
 
 app.get('/data', async (req,res) => {
     const book = await Book.find();
