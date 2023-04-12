@@ -31,6 +31,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/data', async (req,res) => {
+});
     const book = await Book.find();
 
     if (book) {
@@ -38,7 +39,6 @@ app.get('/data', async (req,res) => {
     } else {
         res.send("Something Went wrong.");
     }
-});
 
 // Route to get book by id
 app.get('/data/:id', async (req, res) => {
@@ -53,6 +53,21 @@ app.get('/data/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+app.delete('/data/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id);
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+        await book.remove();
+        res.json({ message: 'Book removed successfully' });
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+});
+
 
 // Route to add a new book
 app.post('/data', async (req, res) => {
