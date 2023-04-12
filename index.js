@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Book = require('./models/books');
+const Auth = require('./models/auth')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -85,6 +86,18 @@ app.post('/auth', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+
+app.get('/auth', async (req,res) => {
+    const auth = await Auth.find();
+
+    if (auth) {
+        res.json(auth);
+    } else {
+        res.send("Something Went wrong.");
+    }
+});
+
 
 //delete by id
 
