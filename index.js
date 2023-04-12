@@ -55,7 +55,9 @@ app.post('/data', async (req, res) => {
     try {
         const book = new Book({
             title: req.body.title,
-            body: req.body.body
+            body: req.body.body,
+            discription:req.body.discription,
+            image:req.body.image
         });
         await book.save();
         res.json(book);
