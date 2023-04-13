@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Authschema = new Schema({
-    mobile:{
+    hospital_id:{
         type: String,
         required:true,
     },
-    adhar:{
+    aadhaar_num:{
         type:String,
         required:true,
     },
