@@ -97,6 +97,7 @@ app.post('/auth', async (req, res) => {
         })
         await auth.save();
         res.json(auth);
+        alert("Otp Authentication Done")
     } catch (error) {
         console.log("Err", + error);
         res.status(500).send('Server Error');
