@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
+const AuthA = require('./models/auths');
+
 
 
 const app = express();
@@ -95,6 +97,22 @@ app.post('/auth', async (req, res) => {
              otp : req.body.otp
         })
         await auth.save();
+        res.json("Otp Authentication Done");
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+  });
+
+
+  app.post('/autha', async (req, res) => {
+    try {
+        const autha = new AuthA({
+            hospital_id : req.body.hospital_id,
+            aadhaar_num : req.body.aadhaar_num,
+            otp : req.body.otp
+        })
+        await autha.save();
         res.json("Otp Authentication Done");
     } catch (error) {
         console.log("Err", + error);
