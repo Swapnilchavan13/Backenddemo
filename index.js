@@ -105,19 +105,24 @@ app.post('/auth', async (req, res) => {
   });
 
 
+  const otpGenerator = require('otp-generator');
+
   app.post('/autha', async (req, res) => {
     try {
-        const autha = new AuthA({
-            aadhaar_num : req.body.aadhaar_num,
-           
-        })
-        await autha.save();
-        res.json("AAdhar seen");
+      const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+      const autha = new AuthA({
+        aadhaar_num : req.body.aadhaar_num,
+        otp: otp
+      })
+      await autha.save();
+      res.json({ message: otp });
+      console.log(otp)
     } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
+      console.log("Err", + error);
+      res.status(500).send('Server Error');
     }
   });
+  
 
 
 //delete by id
