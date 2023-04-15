@@ -104,7 +104,7 @@ app.post('/auth', async (req, res) => {
     }
   });
 
-  app.post('/authadhar', async (req, res) => {
+  app.post('/auth', async (req, res) => {
 
     try {
         const authadhar = new Authadhar({  
