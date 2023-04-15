@@ -105,14 +105,14 @@ app.post('/auth', async (req, res) => {
   });
 
 
-  app.post('/auth', async (req, res) => {
+  app.post('/autha', async (req, res) => {
     try {
         const autha = new AuthA({
             aadhaar_num : req.body.aadhaar_num,
            
         })
         await autha.save();
-        res.json("another Authentication Done");
+        res.json("AAdhar seen");
     } catch (error) {
         console.log("Err", + error);
         res.status(500).send('Server Error');
