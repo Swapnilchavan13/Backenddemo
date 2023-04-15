@@ -88,7 +88,6 @@ app.get('/auth', async (req,res) => {
 });
 
 app.post('/auth', async (req, res) => {
-
     try {
         const auth = new Auth({
             hospital_id : req.body.hospital_id,
@@ -97,6 +96,22 @@ app.post('/auth', async (req, res) => {
         })
         await auth.save();
         res.json("Otp Authentication Done");
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+  });
+
+  app.post('/auth', async (req, res) => {
+
+    try {
+        const auth = new Authadhar({
+            
+            aadhaar_num : req.body.aadhaar_num,
+           
+        })
+        await auth.save();
+        res.json("AAdhar submitted");
     } catch (error) {
         console.log("Err", + error);
         res.status(500).send('Server Error');
