@@ -5,8 +5,7 @@ const cors = require('cors');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
 const AuthA = require('./models/auths');
-
-
+const otpGenerator = require('otp-generator');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -94,7 +93,7 @@ app.post('/auth', async (req, res) => {
         const auth = new Auth({
             hospital_id : req.body.hospital_id,
             aadhaar_num : req.body.aadhaar_num,
-             otp : req.body.otp
+            otp : req.body.otp
         })
         await auth.save();
         res.json("Otp Authentication Done");
@@ -102,46 +101,25 @@ app.post('/auth', async (req, res) => {
         console.log("Err", + error);
         res.status(500).send('Server Error');
     }
-  });
-
-
-  const otpGenerator = require('otp-generator');
-
-  app.post('/autha', async (req, res) => {
-    try {
-      const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-      console.log('OTP generated:', otp);
-      const autha = new AuthA({
-        aadhaar_num : req.body.aadhaar_num,
-        otp: otp
-      })
-      await autha.save();
-      res.json({ message: "OTP generated and saved" ,otp });
-    } catch (error) {
-      console.log("Err", + error);
-      res.status(500).send('Server Error');
-    }
-  });
-  
-  
-
-
-//delete by id
-
-app.delete('/data/:_id', async (req, res) => {
-    try {
-        const book = await Book.findById(req.params._id);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-        await book.remove();
-        res.json({ message: 'Book removed successfully' });
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
 });
 
+
+app.post('/autha', async (req, res) => {
+  try {
+    const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+    console.log('OTP generated:', otp);
+    const autha = new AuthA({
+      aadhaar_num : req.body.aadhaar_num,
+      otp: otp
+    })
+    await autha.save();
+    res.json({ message: "OTP generated and saved" ,otp });
+  } catch (error) {
+    console.log("Err", + error);
+    res.status(500).send('Server Error');
+  }
+});
+   
 
 connectDB().then(() => {
     app.listen(PORT, () => {
