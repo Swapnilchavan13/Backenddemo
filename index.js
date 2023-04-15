@@ -109,19 +109,20 @@ app.post('/auth', async (req, res) => {
 
   app.post('/autha', async (req, res) => {
     try {
-      const otp = otpGenerator.generate(6, { digits: true });
+      const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
+      console.log('OTP generated:', otp);
       const autha = new AuthA({
         aadhaar_num : req.body.aadhaar_num,
         otp: otp
       })
       await autha.save();
-      res.json({ message: "OTP generated and saved" , otp });
-      console.log(otp)
+      res.json({ message: "OTP generated and saved" });
     } catch (error) {
       console.log("Err", + error);
       res.status(500).send('Server Error');
     }
   });
+  
   
 
 
