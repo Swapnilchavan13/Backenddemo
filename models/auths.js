@@ -17,15 +17,4 @@ const Authschema = new Schema({
     } 
 })
 
-const Authadhar = new Schema({
-    
-    aadhaar_num:{
-        type:String,
-        required:true,
-    }
-})
-
-
-module.exports = mongoose.model("Authadhar", Authadhar)
-
 module.exports = mongoose.model("Auth", Authschema)

@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
-const Authadhar = require('./models/auths');
-
 
 
 const app = express();
@@ -98,20 +96,6 @@ app.post('/auth', async (req, res) => {
         })
         await auth.save();
         res.json("Otp Authentication Done");
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-  });
-
-  app.post('/auth', async (req, res) => {
-
-    try {
-        const authadhar = new Authadhar({  
-            aadhaar_num : req.body.aadhaar_num,
-        })
-        await authadhar.save()
-        res.json("AAdhar submitted");
     } catch (error) {
         console.log("Err", + error);
         res.status(500).send('Server Error');
