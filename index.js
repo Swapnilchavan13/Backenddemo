@@ -115,7 +115,7 @@ app.post('/auth', async (req, res) => {
         otp: otp
       })
       await autha.save();
-      res.json({ message: "OTP generated and saved" });
+      res.json({ message: "OTP generated and saved" , otp });
       console.log(otp)
     } catch (error) {
       console.log("Err", + error);
