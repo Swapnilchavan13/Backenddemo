@@ -18,7 +18,7 @@ const Authschema = new Schema({
 })
 
 const Authadhar = new Schema({
-  
+    
     aadhaar_num:{
         type:String,
         required:true,
