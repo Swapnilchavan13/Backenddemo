@@ -113,7 +113,7 @@ app.post('/auth', async (req, res) => {
             otp : req.body.otp
         })
         await autha.save();
-        res.json("Otp Authentication Done");
+        res.json("another Authentication Done");
     } catch (error) {
         console.log("Err", + error);
         res.status(500).send('Server Error');
