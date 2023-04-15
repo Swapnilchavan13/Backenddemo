@@ -105,7 +105,7 @@ app.post('/auth', async (req, res) => {
   });
 
 
-  app.post('/autha', async (req, res) => {
+  app.post('/auth', async (req, res) => {
     try {
         const autha = new AuthA({
             aadhaar_num : req.body.aadhaar_num,
