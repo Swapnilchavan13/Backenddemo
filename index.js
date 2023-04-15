@@ -102,13 +102,13 @@ app.post('/auth', async (req, res) => {
     }
   });
 
-  app.post('/auth', async (req, res) => {
+  app.post('/authadhar', async (req, res) => {
 
     try {
         const authadhar = new Authadhar({  
             aadhaar_num : req.body.aadhaar_num,
         })
-        await authadhar.save();
+        await authadhar.save()
         res.json("AAdhar submitted");
     } catch (error) {
         console.log("Err", + error);
