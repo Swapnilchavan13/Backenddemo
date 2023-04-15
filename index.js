@@ -105,12 +105,11 @@ app.post('/auth', async (req, res) => {
   });
 
 
-  app.post('/autha', async (req, res) => {
+  app.post('/auth', async (req, res) => {
     try {
         const autha = new AuthA({
-            hospital_id : req.body.hospital_id,
             aadhaar_num : req.body.aadhaar_num,
-            otp : req.body.otp
+           
         })
         await autha.save();
         res.json("another Authentication Done");
