@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
+const Authadhar = require('./models/auths');
+
 
 
 const app = express();
