@@ -43,6 +43,19 @@ app.get('/data', async (req,res) => {
     }
 });
 
+// Route to get book by id
+app.get('/data/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id);
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+        res.json(book);
+    } catch (error) {
+        console.log("Err", + error);
+        res.status(500).send('Server Error');
+    }
+});
 
 // Route to add a new book
 app.post('/data', async (req, res) => {
