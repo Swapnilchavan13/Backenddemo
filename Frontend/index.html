@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Add Book</title>
+</head>
+<body>
+    <form>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title"><br><br>
+        
+        <label for="body">Body:</label>
+        <textarea id="body" name="body"></textarea><br><br>
+        
+        <label for="discription">Description:</label>
+        <input type="text" id="discription" name="discription"><br><br>
+        
+        <label for="image">Image URL:</label>
+        <input type="text" id="image" name="image"><br><br>
+        
+        <input type="submit" value="Submit" id="submit">
+    </form>
+<a href="data.html">
+
+  <h1>Data</h1>
+</a>
+
+    <script>
+      const discriptionInput = document.querySelector('#discription');
+        const form = document.querySelector('form');
+        const titleInput = document.querySelector('#title');
+        const bodyInput = document.querySelector('#body');
+        const imageInput = document.querySelector('#image');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const data = {
+                title: titleInput.value,
+                body: bodyInput.value,
+                discription: discriptionInput.value,
+                image: imageInput.value
+            };
+
+            try {
+                const response = await fetch('https://lonely-cow-life-jacket.cyclic.app/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const json = await response.json();
+                console.log(json);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

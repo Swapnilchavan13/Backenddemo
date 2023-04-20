@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>POST Request Example</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+      }
+      button[type="button"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      button[type="button"]:hover {
+        background-color: #3e8e41;
+      }
+      h1{
+        background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJEPyvVNktY09PZeG_e8I9GsG5ywEDOnrGyQ&usqp=CAU');
+        background-repeat: repeat;
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 100px;
+      }
+      </style>
+  </head>
+  <body>
+    <h1>Save Tigers</h1>
+    <form>
+        <label for="hospitalId">Hospital ID:</label>
+        <input type="text" id="hospitalId" name="hospital_id" required><br>
+    
+        <label for="aadhaarNumber">Aadhaar Number:</label>
+        <input type="text" id="aadhaarNumber" name="aadhaar_number" required><br>
+    
+        <button type="button" onclick="getOTP()">Get OTP</button>
+        <br>
+    
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" required><br>
+    
+        <button type="button" onclick="sendData()">Submit</button>
+      </form>
+
+    
+      <script>
+        let receivedOTP;
+    
+        function getOTP() {
+          const url = 'https://lonely-cow-life-jacket.cyclic.app/autha';
+          const aadhaarNumber = document.getElementById('aadhaarNumber').value;
+    
+          const d = {
+            aadhaar_num: aadhaarNumber,
+          };
+    
+          const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(d)
+          };
+    
+          fetch(url, requestOptions)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              receivedOTP = data.otp;
+              const otpInput = document.getElementById('otp');
+              otpInput.value = receivedOTP;
+              alert('OTP has been sent to your mobile number: ' + receivedOTP);
+            })
+            .catch(error => {
+              console.log(error);
+              alert('Error getting OTP');
+            });
+        }
+    
+        function sendData() {
+          const url = 'https://lonely-cow-life-jacket.cyclic.app/auth';
+          const hospitalId = document.getElementById('hospitalId').value;
+          const aadhaarNumber = document.getElementById('aadhaarNumber').value;
+          const otp = document.getElementById('otp').value;
+          console.log(otp, receivedOTP)
+    
+          if (otp == receivedOTP) {
+            const d = {
+              hospital_id: hospitalId,
+              aadhaar_num: aadhaarNumber,
+              otp: otp
+            };
+    
+            const requestOptions = {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(d)
+            };
+    
+            fetch(url, requestOptions)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(response.statusText);
+                }
+                return response.json();
+              })
+              .then(data => {
+                if (data.message === 'success') {
+                  alert('Successful');
+                } else {
+                  alert('Failed');
+                }
+              })
+              .catch(error => {
+                console.log(error);
+                alert('Error submitting form');
+              });
+          } else {
+            alert('Invalid OTP');
+          }
+        }
+      </script>
+    </body>
+    
+

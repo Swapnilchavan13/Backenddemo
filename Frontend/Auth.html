@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Data</title>
+</head>
+<body>
+    <h1>Add Data</h1>
+    <form id="auth-form">
+        <label for="mobile">Mobile Number:</label>
+        <input type="text" id="mobile" name="mobile"><br><br>
+        <label for="adhar">Adhar Number:</label>
+        <input type="text" id="adhar" name="adhar"><br><br>
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp"><br><br>
+        <button id="generate-otp" type="button">Generate OTP</button>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('auth-form');
+        const generateOtpBtn = document.getElementById('generate-otp');
+        const otpField = document.getElementById('otp');
+
+        // Add event listener to generate OTP button
+        generateOtpBtn.addEventListener('click', () => {
+            const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
+            otpField.value = otp;
+        });
+
+        // Add event listener to submit form
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            const mobile = document.getElementById('mobile').value;
+            const adhar = document.getElementById('adhar').value;
+            const otp = otpField.value;
+            const response = await fetch('http://192.168.1.8:8000/Auth/otp-verification/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    //192.168.1.8:8000
+                    //varifiction                    
+                    //http://192.168.1.8:8000/Auth/otp-verification/
+                    //http://192.168.1.8:8000/Auth/auth/user-verification/
+                },
+                body: JSON.stringify({ mobile, adhar, otp })
+            });
+            const result = await response.json();
+            alert("AUTHENTICATION DONE"); 
+            form.reset();
+        });
+    </script>
+</body>
+</html>

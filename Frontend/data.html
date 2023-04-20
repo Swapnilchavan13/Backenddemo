@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data</title>
+</head>
+<body>
+    <h1>Data</h1>
+    <div id="data-container"></div>
+
+    <script>
+        fetch('https://lonely-cow-life-jacket.cyclic.app/data')
+            .then(response => response.json())
+            .then(data => {
+                const dataContainer = document.getElementById('data-container');
+                data.forEach(book => {
+                    const bookContainer = document.createElement('div');
+                    bookContainer.innerHTML = `
+                        <h2>${book.title}</h2>
+                        <p>${book.body}</p>
+                        <p>${book.discription}</p>
+                        <img src="${book.image}">
+                        <button data-id="${book._id}">Delete</button>
+                    `;
+                    dataContainer.appendChild(bookContainer);
+                    bookContainer.querySelector('button').addEventListener('click', (event) => {
+                        const id = event.target.getAttribute('data-id');
+                        console.log(id)
+                        fetch(`https://lonely-cow-life-jacket.cyclic.app/data/${book._id}`, { method: 'DELETE' })
+                            .then(() => {
+                                bookContainer.remove();
+                            })
+                            .catch(error => console.error(error));
+                    });
+                });
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+</html>
