@@ -11,6 +11,380 @@
 	</style>
 </head>
 <body>
+	<p>Q1.What is the difference between a block element and an inline element? Give few examples of block and inline tags which we have in HTML.
+
+		Answer-
+		
+		In HTML, elements are categorized into two types, block-level elements, and inline-level elements, based on their display properties and how they interact with other elements on the page.
+		
+		A block-level element occupies the full width available, by default, and creates a new line after itself. It is used for larger elements, such as paragraphs, headings, and containers, which are intended to span the full width of the page. Examples of block-level elements include:
+		
+		<div>
+		<h1> to <h6>
+		<p>
+		<ul> and <ol>
+		<nav>
+		<header>, <footer>, <section>, <article>
+		On the other hand, an inline-level element only takes up the space required by its content and does not force a new line to be created. It is used for smaller elements, such as text, images, and links, that are intended to be displayed within a line of text. Examples of inline-level elements include:
+		
+		<a>
+		<img>
+		<span>
+		<em>, <strong>
+		<input>
+		<label>
+		It's important to note that elements can be styled with CSS to change their display property, so an inline element can be made into a block element and vice versa.
+		
+		
+		Q2.What are pseudo-elements and pseudo-classes in CSS? Give some examples.
+		
+		Answer- 
+		
+		In CSS, pseudo-elements and pseudo-classes are used to select and style elements based on their state or position in the document tree, without the need for additional markup.
+		
+		Pseudo-classes are used to select and style elements based on their state, such as whether they are being hovered over, clicked, or in a certain position within the document. Some examples of pseudo-classes include:
+		
+		:hover: selects and styles an element when the mouse is over it
+		:active: selects and styles an element when it is being clicked
+		:focus: selects and styles an element when it has focus, such as when a user clicks on it or navigates to it using the keyboard
+		:first-child: selects and styles the first child element of a parent element
+		:nth-child(n): selects and styles the nth child element of a parent element, where n is a number or expression
+		Pseudo-elements, on the other hand, are used to style specific parts of an element, such as its first letter, first line, or a generated content. Some examples of pseudo-elements include:
+		
+		::before: inserts content before the content of an element
+		::after: inserts content after the content of an element
+		::first-letter: selects and styles the first letter of the first line of text in an element
+		::first-line: selects and styles the first line of text in an element
+		::selection: selects and styles the portion of an element that is currently selected by the user
+		Here is an example of using a pseudo-class to style a link when it's being hovered over:
+		
+		a:hover {
+		  color: red;
+		  text-decoration: underline;
+		}
+		And here is an example of using a pseudo-element to insert content before the content of an element:
+		
+		p::before {
+		  content: "Note: ";
+		  font-weight: bold;
+		}
+		
+		In both cases, the CSS selects a specific state or part of an element and applies styles to it without needing to modify the HTML markup.
+		
+		
+		Q3. What are CSS positions? What are the position types in CSS? What is the default position property in CSS?
+		
+		Answer -
+		
+		CSS positions are used to specify the positioning of an HTML element on a web page. The position of an element is determined by three CSS properties: position, top, and left.
+		
+		The position property specifies the type of positioning used for the element. There are four position types in CSS:
+		
+		Static - This is the default position property in CSS. Elements with static positioning are positioned according to their normal flow in the document, and the top and left properties have no effect on them.
+		
+		Relative - Elements with relative positioning are positioned relative to their normal position in the document. The top and left properties can be used to specify the distance from the element's normal position. Other elements on the page are not affected by an element with relative positioning.
+		
+		Absolute - Elements with absolute positioning are positioned relative to the nearest positioned ancestor (an ancestor with a position property other than static). If no positioned ancestor is found, the element is positioned relative to the initial containing block (usually the body element). The top and left properties can be used to specify the distance from the nearest positioned ancestor. An element with absolute positioning is removed from the normal document flow, and other elements can overlap it.
+		
+		Fixed - Elements with fixed positioning are positioned relative to the viewport (the browser window), and do not move when the page is scrolled. The top and left properties can be used to specify the position of the element relative to the viewport. Other elements on the page can overlap an element with fixed positioning.
+		
+		The default position property in CSS is static.
+		
+		
+		Q4. What is difference between Local storage, session storage and cookies?
+		
+		Answer-
+		
+		Local storage, session storage, and cookies are all ways to store data in the browser, but they differ in how long the data is stored and how it can be accessed.
+		
+		Local Storage: Local storage allows web applications to store data locally within the user's browser, even after the user navigates away from the web page or closes the browser. Local storage data is persistent and can only be removed by the user or through the application code. It is accessible to any script on the same domain and is limited to about 5-10MB of storage.
+		
+		Session Storage: Session storage is similar to local storage, but the data is only accessible during the current session, which ends when the user closes the browser window. Session storage data is not persistent, and it is automatically cleared when the session ends. Session storage is also limited to about 5-10MB of storage.
+		
+		Cookies: Cookies are small text files that are stored on the user's computer by the web server. Cookies can be used to store information such as login credentials or user preferences, and they can be accessed by both the server and the client-side scripts. Unlike local storage and session storage, cookies have an expiration date, after which they are automatically deleted. Cookies are limited to about 4KB of storage.
+		
+		In summary, the main differences between local storage, session storage, and cookies are:
+		
+		Persistence: Local storage is persistent, session storage is not, and cookies can be either persistent or non-persistent depending on their expiration date.
+		Storage Limit: Local storage and session storage are limited to about 5-10MB of storage, while cookies are limited to about 4KB of storage.
+		Accessibility: Local storage and session storage can only be accessed by scripts on the same domain, while cookies can be accessed by both the server and client-side scripts.
+		
+		Q5. What is Hoisting in Javascript?
+		
+		Answer-
+		
+		Hoisting in JavaScript is a behavior where variable and function declarations are moved to the top of their respective scopes by the JavaScript interpreter during compilation or interpretation phase. This means that regardless of where a variable or function is declared within a scope, it is moved to the top of the scope and can be used before it is actually declared.
+		
+		For example, the following code will work because the function declaration is hoisted to the top of the current scope:
+		foo();
+		
+		function foo() {
+		  console.log("Hello, world!");
+		}
+		
+		In this example, the foo() function is called before it is actually defined, but it still works because the function declaration is hoisted to the top of the scope.
+		
+		However, it's important to note that only the declaration is hoisted, not the initialization. For example, the following code will output undefined because the variable declaration is hoisted, but the value is not assigned until later:
+		
+		console.log(myVar);
+		
+		var myVar = "Hello, world!";
+		
+		In this example, the myVar variable is declared at the top of the scope, but it is not initialized until later, so when it is accessed before initialization, it returns undefined.
+		
+		Hoisting can be a useful feature of JavaScript, but it can also lead to bugs and unexpected behavior if not understood properly. It's generally best practice to declare and initialize variables and functions before using them to avoid confusion and ensure consistent behavior.
+		
+		Q6.What are different higher order functions in JS? What is the difference between .map() and .forEach() ?
+		
+		Answer-
+		
+		In JavaScript, higher-order functions are functions that take other functions as arguments and/or return functions as their result. There are several higher-order functions in JavaScript, including:
+		
+		map: This method creates a new array by applying a function to each element of the original array.
+		
+		forEach: This method calls a function once for each element in an array.
+		
+		filter: This method creates a new array with all elements that pass the test implemented by a provided function.
+		
+		reduce: This method applies a function against an accumulator and each element in the array to reduce it to a single value.
+		
+		sort: This method sorts the elements of an array in place.
+		
+		every: This method tests whether all elements in the array pass the test implemented by a provided function.
+		
+		some: This method tests whether at least one element in the array passes the test implemented by a provided function.
+		
+		The main difference between map() and forEach() is that map() returns a new array with the results of calling a provided function on every element in the original array, while forEach() simply executes a provided function on each element in the array, but does not return a new array. In other words, map() transforms an array, while forEach() does not.
+		
+		For example, suppose we have an array of numbers and we want to double each number in the array. We can use map() to create a new array with the doubled values like this:
+		
+		const numbers = [1, 2, 3, 4, 5];
+		
+		const doubled = numbers.map(num => num * 2);
+		
+		console.log(doubled); // Output: [2, 4, 6, 8, 10]
+		
+		On the other hand, if we want to simply log each number in the array to the console, we can use forEach() like this:
+		
+		const numbers = [1, 2, 3, 4, 5];
+		
+		numbers.forEach(num => console.log(num));
+		
+		In this example, forEach() executes the provided function once for each element in the numbers array, but it does not return a new array.
+		
+		
+		Q7.Explain execution context diagram of following code snippets, use white board to draw execution context diagram
+		
+		Answer- 
+		
+		console.log('First');
+		setTimeout(() => console.log('Second'), 0);
+		console.log('Third');
+		
+		When this code is executed, the output will be:
+		
+		First
+		Third
+		Second
+		
+		This is because the console.log('First') statement is executed first and logs "First" to the console. Then, the setTimeout() function is called with a callback function that logs "Second" to the console. However, because the delay specified in setTimeout() is 0 milliseconds, the callback function is added to the event queue and will not be executed until all synchronous code has finished running.
+		
+		Next, the console.log('Third') statement is executed and logs "Third" to the console. Finally, when all synchronous code has finished running, the callback function in setTimeout() is retrieved from the event queue and executed, logging "Second" to the console.
+		
+		Here is an execution context diagram for Code Snippet-1:
+		
+		Execution Context:
+		|----------------------------------|
+		|          Global Context          |
+		|----------------------------------|
+		|           console.log('First')   |
+		|----------------------------------|
+		|       setTimeout(() =>          |
+		|           console.log('Second')  |
+		|       , 0)                       |
+		|----------------------------------|
+		|        console.log('Third')      |
+		|----------------------------------|
+		|    Callback Queue                |
+		|----------------------------------|
+		|       setTimeout callback        |
+		|        (console.log('Second'))   |
+		|----------------------------------|
+		
+		Code Snippet-2:
+		
+		function greeting() {
+		  console.log('Hello, world!');
+		}
+		
+		function message() {
+		  greeting();
+		  console.log('How are you?');
+		}
+		
+		message();
+		
+		
+		When this code is executed, the output will be:
+		
+		Hello, world!
+		How are you?
+		
+		
+		This is because the message() function is called, which in turn calls the greeting() function. The greeting() function logs "Hello, world!" to the console, and then returns control back to message(), which logs "How are you?" to the console.
+		
+		Here is an execution context diagram for Code Snippet-2:
+		
+		Execution Context:
+		|----------------------------------|
+		|          Global Context          |
+		|----------------------------------|
+		|          function greeting()     |
+		|----------------------------------|
+		|          function message()      |
+		|----------------------------------|
+		|           message()              |
+		|----------------------------------|
+		|          greeting()              |
+		|           (console.log())        |
+		|----------------------------------|
+		|         console.log()            |
+		|----------------------------------|
+		
+		
+		Q8.What are promises? What are the different states of a promise? Support your answer with an example where you need to create your own promise.
+		
+		Answer- 
+		
+		In JavaScript, a Promise is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. Promises provide a way to handle asynchronous operations in a more readable and manageable way, using a chain of callbacks that can be attached to the promise to handle success or failure.
+		
+		A promise can be in one of three states:
+		
+		Pending: The initial state; the promise is neither fulfilled nor rejected.
+		Fulfilled: The operation completed successfully, and the promise has a resulting value.
+		Rejected: The operation failed, and the promise has a reason for the failure.
+		Here's an example of how to create and use a Promise:
+		
+		// Define a function that returns a Promise
+		function fetchUserData(userId) {
+		  return new Promise((resolve, reject) => {
+			// Simulate an asynchronous API call
+			setTimeout(() => {
+			  // Check if user exists
+			  const userExists = Math.random() >= 0.5;
+			  if (userExists) {
+				resolve({ id: userId, name: 'John Doe' }); // Resolve with user object
+			  } else {
+				reject(new Error('User not found')); // Reject with error object
+			  }
+			}, 2000); // 2 second delay
+		  });
+		}
+		
+		// Call the function and handle the Promise states
+		const userId = 123;
+		fetchUserData(userId)
+		  .then(user => {
+			console.log(`User with ID ${user.id} found:`, user);
+		  })
+		  .catch(error => {
+			console.error('Error:', error.message);
+		  });
+		
+		
+		In this example, the fetchUserData() function returns a Promise that resolves with a user object if the user exists, or rejects with an error object if the user does not exist. We call the function with a user ID of 123, and use .then() to handle the resolved state of the Promise by logging the user object to the console. We use .catch() to handle the rejected state of the Promise by logging the error message to the console.
+		
+		When we run this code, it will output one of two possibilities:
+		
+		If the Promise is fulfilled (i.e., the user exists), it will log something like:
+		
+		In this example, the fetchUserData() function returns a Promise that resolves with a user object if the user exists, or rejects with an error object if the user does not exist. We call the function with a user ID of 123, and use .then() to handle the resolved state of the Promise by logging the user object to the console. We use .catch() to handle the rejected state of the Promise by logging the error message to the console.
+		
+		When we run this code, it will output one of two possibilities:
+		
+		If the Promise is fulfilled (i.e., the user exists), it will log something like:
+		
+		User with ID 123 found: { id: 123, name: 'John Doe' }
+		
+		If the Promise is rejected (i.e., the user does not exist), it will log something like:
+		
+		Error: User not found
+		
+		
+		Q9.What is ‘this’ keyword in JavaScript? explain with an example.
+		
+		Answer- 
+		
+		In JavaScript, this is a keyword that refers to the current execution context or the object that the function is a method of. The value of this is determined by how a function is invoked, and can change depending on the context in which it is called.
+		
+		Here's an example to demonstrate the use of this keyword:
+		
+		// Define a simple object with a method that uses `this`
+		const person = {
+		  name: 'John',
+		  age: 30,
+		  greet() {
+			console.log(`Hello, my name is ${this.name}, and I am ${this.age} years old.`);
+		  }
+		};
+		
+		// Call the method and see how `this` is used
+		person.greet(); // Output: Hello, my name is John, and I am 30 years old.
+		
+		
+		In this example, we define an object called person with a name and an age property, as well as a greet() method that logs a message to the console using the this keyword to reference the name and age properties of the object. We then call the greet() method on the person object, which outputs the message to the console with the values of the name and age properties using this.
+		
+		When greet() is called on the person object, this refers to the person object itself. This allows the method to access the properties of the object using dot notation (this.name and this.age). If we were to call greet() without using the person object, the value of this would be different and may cause an error or unexpected behavior.
+		
+		
+		
+		Q10. What is an Immediately Invoked Function in JavaScript? explain with an example
+		
+		
+		Answer- 
+		
+		An Immediately Invoked Function (IIFE) is a function that is executed immediately after it is defined. It is typically used to create a new scope and avoid naming collisions with other code in the global scope. An IIFE can be created using a function expression or a function declaration.
+		
+		Here's an example of an IIFE created with a function expression
+		
+		(function() {
+		  let message = 'Hello, world!';
+		  console.log(message);
+		})();
+		
+		
+		In this example, we define an anonymous function expression and immediately invoke it using parentheses () at the end. This creates a new scope for the function to execute in, which keeps the message variable out of the global scope and prevents it from conflicting with other code. We log the value of message to the console, which outputs "Hello, world!".
+		
+		Here's another example of an IIFE created with a named function declaration:
+		
+		(function sayHello() {
+		  let message = 'Hello, world!';
+		  console.log(message);
+		})();
+		
+		
+		In this example, we define a named function called sayHello and immediately invoke it using parentheses (). The function works the same way as the previous example, but now it has a name that can be used for debugging or other purposes.
+		
+		Both of these examples use the same basic pattern: define a function, wrap it in parentheses to create an expression, and immediately invoke it using parentheses again. This creates a new scope for the function to execute in, which helps to prevent naming collisions and keeps the global scope clean.
+		
+		Q11. Explain OOPs concept and explain the Four Principles of OOP.
+		
+		Answer- 
+		
+		Object-oriented programming (OOP) is a programming paradigm that uses objects to represent and manipulate data. In OOP, objects are instances of classes, which define their properties and behaviors. OOP is a powerful and flexible programming paradigm that is used in many modern programming languages, including Java, Python, C++, and JavaScript.
+		
+		The four principles of OOP are:
+		
+		Encapsulation: Encapsulation is the process of hiding implementation details and exposing only the necessary information to the user. This is achieved by creating classes that have a well-defined public interface, which consists of methods and properties that are accessible to the user, and a private implementation that is hidden from the user.
+		
+		Inheritance: Inheritance is the process of creating new classes from existing classes. Inheritance allows new classes to inherit properties and behaviors from existing classes, which can save time and effort in programming. Inheritance also allows for code reuse, as common functionality can be defined in a base class and inherited by multiple subclasses.
+		
+		Polymorphism: Polymorphism is the ability of an object to take on multiple forms. Polymorphism is achieved through method overriding and method overloading. Method overriding allows a subclass to provide a different implementation of a method that is already defined in its parent class, while method overloading allows a class to define multiple methods with the same name but different parameters.
+		
+		Abstraction: Abstraction is the process of reducing complexity by hiding unnecessary details and exposing only the essential features of an object. Abstraction is achieved through the use of abstract classes and interfaces, which define a set of methods and properties that must be implemented by subclasses. Abstract classes and interfaces allow for code reuse and promote consistency in programming.
+		
+		Together, these four principles form the foundation of object-oriented programming and provide a powerful and flexible framework for creating complex applications. By encapsulating data, inheriting properties and behaviors, allowing for polymorphism, and abstracting complexity, OOP allows for efficient and scalable development of software.
+		</p>
 	<canvas id="myCanvas" width="300" height="300"></canvas>
 	<script>
 		// Get the canvas element and its context
