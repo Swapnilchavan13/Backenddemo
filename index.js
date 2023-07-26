@@ -71,6 +71,7 @@ app.post('/data', async (req, res) => {
       mediaSource: req.body.mediaSource,
       mediaType: req.body.mediaType,
       keywords: req.body.keywords,
+      image:req.body.image
     });
     await data.save();
     res.json(data);
