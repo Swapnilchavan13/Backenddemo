@@ -7,7 +7,7 @@ const Auth = require('./models/auths');
 const AuthA = require('./models/auths');
 const otpGenerator = require('otp-generator');
 
-const Data = require('./models/data');
+const Data = require('./models/datasave');
 
 
 const app = express();
@@ -63,7 +63,7 @@ app.get('/data/:id', async (req, res) => {
 
 ////////////////////////////////////////////
 // Route to add a new data entry
-app.post('/data', async (req, res) => {
+app.post('/datasave', async (req, res) => {
     try {
       const data = new Data({
         mediaTitle: req.body.mediaTitle,
