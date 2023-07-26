@@ -7,7 +7,7 @@ const Auth = require('./models/auths');
 const AuthA = require('./models/auths');
 const otpGenerator = require('otp-generator');
 
-const Data = require('./models/data');
+const Data = require('./models/main');
 
 
 const app = express();
