@@ -63,7 +63,7 @@ app.get('/data/:id', async (req, res) => {
 
 ////////////////////////////////////////////
 // Route to add a new data entry
-app.post('/Data', async (req, res) => {
+app.post('/main', async (req, res) => {
   try {
     const data = new Data({
       mediaTitle: req.body.mediaTitle,
@@ -82,7 +82,7 @@ app.post('/Data', async (req, res) => {
 
 ///////////////////////////////////
 // Route to get all data entries
-app.get('/data', async (req, res) => {
+app.get('/main', async (req, res) => {
     try {
       const data = await Data.find();
       res.json(data);
