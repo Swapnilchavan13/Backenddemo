@@ -23,6 +23,10 @@ const DataSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Data', DataSchema);
