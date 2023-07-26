@@ -7,7 +7,7 @@ const Auth = require('./models/auths');
 const AuthA = require('./models/auths');
 const otpGenerator = require('otp-generator');
 
-const Data = require('./models/datasave');
+const Data = require('./models/data');
 
 
 const app = express();
@@ -63,23 +63,23 @@ app.get('/data/:id', async (req, res) => {
 
 ////////////////////////////////////////////
 // Route to add a new data entry
-app.post('/datasave', async (req, res) => {
-    try {
-      const data = new Data({
-        mediaTitle: req.body.mediaTitle,
-        date: req.body.date,
-        mediaSource: req.body.mediaSource,
-        mediaType: req.body.mediaType,
-        keywords: req.body.keywords,
-      });
-      await data.save();
-      res.json(data);
-    } catch (error) {
-      console.log("Err", + error);
-      res.status(500).send('Server Error');
-    }
-  });
-  
+app.post('/data', async (req, res) => {
+  try {
+    const data = new Data({
+      mediaTitle: req.body.mediaTitle,
+      date: req.body.date,
+      mediaSource: req.body.mediaSource,
+      mediaType: req.body.mediaType,
+      keywords: req.body.keywords,
+    });
+    await data.save();
+    res.json(data);
+  } catch (error) {
+    console.log("Err", + error);
+    res.status(500).send('Server Error');
+  }
+});
+
 
 ////////////////////////////////////////////
 
