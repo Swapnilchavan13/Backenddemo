@@ -26,7 +26,7 @@ const DataSchema = new Schema({
   image: {
     type: String,
     required: true,
-  },
+  }
 });
 
 module.exports = mongoose.model('Data', DataSchema);
