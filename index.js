@@ -80,6 +80,18 @@ app.post('/Data', async (req, res) => {
   }
 });
 
+///////////////////////////////////
+// Route to get all data entries
+app.get('/data', async (req, res) => {
+    try {
+      const data = await Data.find();
+      res.json(data);
+    } catch (error) {
+      console.log("Err", + error);
+      res.status(500).send('Server Error');
+    }
+  });
+  
 
 ////////////////////////////////////////////
 
