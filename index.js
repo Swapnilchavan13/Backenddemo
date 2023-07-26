@@ -63,7 +63,7 @@ app.get('/data/:id', async (req, res) => {
 
 ////////////////////////////////////////////
 // Route to add a new data entry
-app.post('/data', async (req, res) => {
+app.post('/Data', async (req, res) => {
   try {
     const data = new Data({
       mediaTitle: req.body.mediaTitle,
