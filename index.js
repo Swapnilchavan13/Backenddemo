@@ -2,16 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Book = require('./models/books');
-const Auth = require('./models/auths');
-const AuthA = require('./models/auths');
+const multer = require('multer');
 const otpGenerator = require('otp-generator');
-
-const Data = require('./models/data');
-////
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-////
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,159 +11,116 @@ const PORT = process.env.PORT || 3000;
 mongoose.set('strictQuery', false);
 
 const connectDB = async () => {
-    try {
-        const conn = await mongoose.connect(process.env.MONGO_URL);
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.log(error);
-        process.exit(1);
-    }
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 };
 
-// parse application/json
-app.use(express.json());
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// Add cors middleware
+const Data = require('./models/data');
+const Book = require('./models/books');
+const Auth = require('./models/auths');
+
+app.use(express.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send({title: 'Backend is Runnning...'});
+  res.send({ title: 'Backend is Running...' });
 });
 
-
-app.get('/data', async (req,res) => {
+// Route to get all books
+app.get('/data', async (req, res) => {
+  try {
     const book = await Book.find();
-
     if (book) {
-        res.json(book);
+      res.json(book);
     } else {
-        res.send("Something Went wrong.");
+      res.send('Something Went wrong.');
     }
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
 });
 
 // Route to get book by id
 app.get('/data/:id', async (req, res) => {
-    try {
-        const book = await Book.findById(req.params.id);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-        res.json(book);
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-});
-
-
-////////////////////////////////////////////
-// Route to add a new data entry
-app.post('/data', upload.single('image'), async (req, res) => {
-    try {
-      const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-      const image = req.file.buffer; // Get the image data from the multer file object
-  
-      const data = new Data({
-        mediaTitle,
-        date,
-        mediaSource,
-        mediaType,
-        keywords,
-        image,
-      });
-  
-      await data.save();
-      res.json(data);
-    } catch (error) {
-      console.log("Error:", error);
-      res.status(500).send('Server Error');
-    }
-  });
-
-///////////////////////////////////
-// Route to get all data entries
-app.get('/main', async (req, res) => {
-    try {
-      const data = await Data.find();
-      res.json(data);
-    } catch (error) {
-      console.log("Err", + error);
-      res.status(500).send('Server Error');
-    }
-  });
-  
-
-////////////////////////////////////////////
-
-
-
-
-// Route to add a new book
-app.post('/data', async (req, res) => {
-    try {
-        const book = new Book({
-            title: req.body.title,
-            body: req.body.body,
-            discription:req.body.discription,
-            image:req.body.image
-        });
-        await book.save();
-        res.json(book);
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-});
-
-app.get('/a',(req, res) => {
-    res.send({title: 'Auth is Runnning...'});
-});
-
-app.get('/auth', async (req,res) => {
-    const auth = await Auth.find();
-
-    if (auth) {
-        res.json(auth);
-    } else {
-        res.send("Something Went wrong.");
-    }
-});
-
-app.post('/auth', async (req, res) => {
-    try {
-        const auth = new Auth({
-            hospital_id : req.body.hospital_id,
-            aadhaar_num : req.body.aadhaar_num,
-            otp : req.body.otp
-        })
-        await auth.save();
-        res.json("Otp Authentication Done");
-    } catch (error) {
-        console.log("Err", + error);
-        res.status(500).send('Server Error');
-    }
-});
-
-
-app.post('/autha', async (req, res) => {
   try {
-    const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-    console.log('OTP generated:', otp);
-    const autha = new AuthA({
-      aadhaar_num : req.body.aadhaar_num,
-      otp: otp
-    })
-    await autha.save();
-    res.json({ message: "OTP generated and saved" ,otp });
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+    res.json(book);
   } catch (error) {
-    console.log("Err", + error);
+    console.log("Error:", error);
     res.status(500).send('Server Error');
   }
 });
-   
+
+// Route to add a new data entry
+app.post('/data', upload.single('image'), async (req, res) => {
+  try {
+    const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
+    const image = req.file.buffer; // Get the image data from the multer file object
+
+    const data = new Data({
+      mediaTitle,
+      date,
+      mediaSource,
+      mediaType,
+      keywords,
+      image,
+    });
+
+    await data.save();
+    res.json(data);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Route to get all data entries
+app.get('/main', async (req, res) => {
+  try {
+    const data = await Data.find();
+    res.json(data);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Route to add a new book
+app.post('/data', async (req, res) => {
+  try {
+    const book = new Book({
+      title: req.body.title,
+      body: req.body.body,
+      description: req.body.description,
+      image: req.body.image,
+    });
+    await book.save();
+    res.json(book);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Rest of your code for '/a', '/auth', and '/autha' routes
 
 connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Listening on port ${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
 });
