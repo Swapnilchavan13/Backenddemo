@@ -8,7 +8,10 @@ const AuthA = require('./models/auths');
 const otpGenerator = require('otp-generator');
 
 const Data = require('./models/data');
-
+////
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+////
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -63,23 +66,27 @@ app.get('/data/:id', async (req, res) => {
 
 ////////////////////////////////////////////
 // Route to add a new data entry
-app.post('/data', async (req, res) => {
-  try {
-    const data = new Data({
-      mediaTitle: req.body.mediaTitle,
-      date: req.body.date,
-      mediaSource: req.body.mediaSource,
-      mediaType: req.body.mediaType,
-      keywords: req.body.keywords,
-      image:req.body.image
-    });
-    await data.save();
-    res.json(data);
-  } catch (error) {
-    console.log("Err", + error);
-    res.status(500).send('Server Error');
-  }
-});
+app.post('/data', upload.single('image'), async (req, res) => {
+    try {
+      const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
+      const image = req.file.buffer; // Get the image data from the multer file object
+  
+      const data = new Data({
+        mediaTitle,
+        date,
+        mediaSource,
+        mediaType,
+        keywords,
+        image,
+      });
+  
+      await data.save();
+      res.json(data);
+    } catch (error) {
+      console.log("Error:", error);
+      res.status(500).send('Server Error');
+    }
+  });
 
 ///////////////////////////////////
 // Route to get all data entries
