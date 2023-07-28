@@ -91,20 +91,21 @@ app.post('/data', upload.single('image'), async (req, res) => {
 
 // Route to get all data entries
 app.get('/main', async (req, res) => {
-  try {
-    const data = await Data.find();
-
-    const dataWithBase64Image = data.map(item => {
-        const base64Image = item.image.toString('base64');
-        return { ...item._doc, image: base64Image };
+    try {
+      const data = await Data.find();
+  
+      // Encode the image to base64 before sending it to the frontend
+      const dataWithBase64Image = data.map(result => {
+        const base64Image = result.image.toString('base64');
+        return { ...result._doc, image: base64Image };
       });
-
-    res.json(dataWithBase64Image);
-  } catch (error) {
-    console.log("Error:", error);
-    res.status(500).send('Server Error');
-  }
-});
+  
+      res.json(dataWithBase64Image);
+    } catch (error) {
+      console.log("Error:", error);
+      res.status(500).send('Server Error');
+    }
+  });
 
 // Route to add a new book
 app.post('/data', async (req, res) => {
