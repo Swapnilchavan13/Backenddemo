@@ -1,3 +1,4 @@
+const app = express();
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -5,7 +6,6 @@ const cors = require('cors');
 const multer = require('multer');
 const otpGenerator = require('otp-generator');
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 mongoose.set('strictQuery', false);
@@ -93,7 +93,13 @@ app.post('/data', upload.single('image'), async (req, res) => {
 app.get('/main', async (req, res) => {
   try {
     const data = await Data.find();
-    res.json(data);
+
+    const dataWithBase64Image = data.map(item => {
+        const base64Image = item.image.toString('base64');
+        return { ...item._doc, image: base64Image };
+      });
+
+    res.json(dataWithBase64Image);
   } catch (error) {
     console.log("Error:", error);
     res.status(500).send('Server Error');
