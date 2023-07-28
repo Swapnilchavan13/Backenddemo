@@ -1,6 +1,5 @@
-const app = express();
-require('dotenv').config();
 const express = require('express');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
@@ -10,6 +9,21 @@ const PORT = process.env.PORT || 3000;
 
 mongoose.set('strictQuery', false);
 
+const app = express();
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Models
+const Data = require('./models/data');
+const Book = require('./models/books');
+const Auth = require('./models/auths');
+
+// Middleware
+app.use(express.json());
+app.use(cors());
+
+// MongoDB Connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL, {
@@ -23,16 +37,7 @@ const connectDB = async () => {
   }
 };
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-const Data = require('./models/data');
-const Book = require('./models/books');
-const Auth = require('./models/auths');
-
-app.use(express.json());
-app.use(cors());
-
+// Routes
 app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
@@ -126,6 +131,7 @@ app.post('/data', async (req, res) => {
 
 // Rest of your code for '/a', '/auth', and '/autha' routes
 
+// Start the server
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
