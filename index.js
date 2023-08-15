@@ -3,12 +3,29 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
-const Grid = require('gridfs-stream');
-const app = express();
+const otpGenerator = require('otp-generator');
+
 const PORT = process.env.PORT;
 
 mongoose.set('strictQuery', false);
 
+const app = express();
+
+const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
+
+// Models
+const Data = require('./models/data');
+const Auth = require('./models/auths');
+const Book = require('./models/books');
+
+// Middleware
+
+app.use(express.json({ limit: '50mb' }))
+app.use(cors());
+
+// MongoDB Connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL, {
@@ -22,104 +39,102 @@ const connectDB = async () => {
   }
 };
 
-app.use(express.json());
-app.use(cors());
-
-connectDB();
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
-
-const DataSchema = new mongoose.Schema({
-  mediaTitle: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: String,
-    required: true,
-  },
-  mediaSource: {
-    type: [String],
-    required: true,
-  },
-  mediaType: {
-    type: String,
-    required: true,
-  },
-  keywords: {
-    type: String,
-    required: true,
-  },
-  image: {
-    type: mongoose.Schema.Types.ObjectId, // Using GridFS ObjectId reference
-    ref: 'uploads.files', // GridFS collection name
-    required: true,
-  },
+// Routes
+app.get('/', (req, res) => {
+  res.send({ title: 'Backend is Running...' });
 });
 
-const Data = mongoose.model('Data', DataSchema);
+// Route to get all books
+app.get('/book-data', async (req, res) => {
+  try {
+    const book = await Book.find();
+    if (book) {
+      res.json(book);
+    } else {
+      res.send('Something Went wrong.');
+    }
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
 
-const conn = mongoose.connection;
-const gfs = Grid(conn.db, mongoose.mongo);
+// Route to get book by id
+app.get('/book-data/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+    res.json(book);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
 
+// Route to add a new data entry
 app.post('/data', upload.single('image'), async (req, res) => {
   try {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-    const image = req.file;
+    const image = req.file.buffer; // Get the image data from the multer file object
 
-    const writeStream = gfs.createWriteStream({
-      filename: image.originalname,
-      metadata: {
-        mediaTitle,
-        date,
-        mediaSource,
-        mediaType,
-        keywords,
-      },
+    const data = new Data({
+      mediaTitle,
+      date,
+      mediaSource,
+      mediaType,
+      keywords,
+      image,
     });
 
-    image.buffer.pipe(writeStream);
+    await data.save();
+    res.json(data);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
 
-    writeStream.on('close', async (file) => {
-      console.log('File saved in GridFS:', file._id);
-
-      const newData = new Data({
-        mediaTitle,
-        date,
-        mediaSource,
-        mediaType,
-        keywords,
-        image: file._id,
+app.get('/main', async (req, res) => {
+    try {
+      const data = await Data.find();
+  
+      // Encode the image to base64 before sending it to the frontend
+      const dataWithBase64Image = data.map(result => {
+        const base64Image = result.image.toString('base64');
+        return { ...result._doc, image: base64Image };
       });
-
-      await newData.save();
-      res.json(newData);
-    });
-
-    writeStream.on('error', (err) => {
-      console.log('Error saving file:', err);
+  
+      res.json(dataWithBase64Image);
+    } catch (error) {
+      console.log("Error:", error);
       res.status(500).send('Server Error');
-    });
-  } catch (error) {
-    console.log('Error:', error);
-    res.status(500).send('Server Error');
-  }
-});
+    }
+  });
 
-app.get('/images/:fileId', (req, res) => {
+// Route to add a new book
+app.post('/book-data', async (req, res) => {
   try {
-    const fileId = req.params.fileId;
-
-    const readStream = gfs.createReadStream({ _id: fileId });
-
-    readStream.pipe(res);
+    const book = new Book({
+      title: req.body.title,
+      body: req.body.body,
+      description: req.body.description,
+      image: req.body.image,
+    });
+    await book.save();
+    res.json(book);
   } catch (error) {
-    console.log('Error:', error);
+    console.log("Error:", error);
     res.status(500).send('Server Error');
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+// Rest of your code for '/a', '/auth', and '/autha' routes
+
+// Start the server
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
 });
