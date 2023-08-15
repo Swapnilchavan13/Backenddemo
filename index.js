@@ -3,7 +3,6 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
-const otpGenerator = require('otp-generator');
 
 const PORT = process.env.PORT || 3000;
 
@@ -71,7 +70,6 @@ app.get('/book-data/:id', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-
 // Route to add a new data entry
 app.post('/data', upload.single('image'), async (req, res) => {
   try {
