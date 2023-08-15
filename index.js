@@ -3,12 +3,30 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
-const Grid = require('gridfs-stream');
-const app = express();
+const otpGenerator = require('otp-generator');
+
 const PORT = process.env.PORT || 3000;
 
 mongoose.set('strictQuery', false);
 
+const app = express();
+
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
+// Models
+const Data = require('./models/data');
+const Book = require('./models/books');
+const Auth = require('./models/auths');
+
+// Middleware
+
+app.use(express.json());
+app.use(cors());
+
+// MongoDB Connection
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL, {
@@ -22,58 +40,59 @@ const connectDB = async () => {
   }
 };
 
-app.use(express.json());
-app.use(cors());
+// Routes
+app.get('/', (req, res) => {
+  res.send({ title: 'Backend is Running...' });
+});
 
-connectDB();
+// Route to get all books
+app.get('/book-data', async (req, res) => {
+  try {
+    const book = await Book.find();
+    if (book) {
+      res.json(book);
+    } else {
+      res.send('Something Went wrong.');
+    }
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
-
-const conn = mongoose.connection;
-const gfs = Grid(conn.db, mongoose.mongo);
+// Route to get book by id
+app.get('/book-data/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+    res.json(book);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
 
 // Route to add a new data entry
 app.post('/data', upload.single('image'), async (req, res) => {
   try {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-    const image = req.file;
+    const image = req.file.buffer; // Get the image data from the multer file object
 
-    const writeStream = gfs.createWriteStream({
-      filename: image.originalname,
-      metadata: {
-        mediaTitle,
-        date,
-        mediaSource,
-        mediaType,
-        keywords,
-      },
+    const data = new Data({
+      mediaTitle,
+      date,
+      mediaSource,
+      mediaType,
+      keywords,
+      image,
     });
 
-    image.buffer.pipe(writeStream);
-
-    writeStream.on('close', async (file) => {
-      console.log('File saved in GridFS:', file._id);
-
-      const newData = new Data({
-        mediaTitle,
-        date,
-        mediaSource,
-        mediaType,
-        keywords,
-        image: file._id,
-      });
-
-      await newData.save();
-      res.json(newData);
-    });
-
-    writeStream.on('error', (err) => {
-      console.log('Error saving file:', err);
-      res.status(500).send('Server Error');
-    });
+    await data.save();
+    res.json(data);
   } catch (error) {
-    console.log('Error:', error);
+    console.log("Error:", error);
     res.status(500).send('Server Error');
   }
 });
