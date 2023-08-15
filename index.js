@@ -12,9 +12,9 @@ mongoose.set('strictQuery', false);
 const app = express();
 
 
-const storage = multer.multer.diskStorage({
+const storage = multer.diskStorage({
   destination : (req, file, cb) => {
-    cb(null, '/Image' )
+    cb(null, 'Image' )
   }
   
 });
