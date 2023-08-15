@@ -24,9 +24,9 @@ const DataSchema = new Schema({
     required: true,
   },
   image: {
-    type: Buffer,
-  required: true,
-  // maxlength: 50 * 1024 * 1024
+    type: mongoose.Schema.Types.ObjectId, // Reference to the GridFS file
+    ref: 'uploads.files', // GridFS collection name
+    required: true,
   },
 });
 
