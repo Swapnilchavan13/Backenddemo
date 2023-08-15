@@ -12,12 +12,7 @@ mongoose.set('strictQuery', false);
 const app = express();
 
 
-const storage = multer.diskStorage({
-  destination : (req, file, cb) => {
-    cb(null, 'Image' )
-  }
-  
-});
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
@@ -43,7 +38,6 @@ const connectDB = async () => {
     console.log(error);
     process.exit(1);
   }
-  // Route to get all books
 };
 
 // Routes
@@ -51,6 +45,7 @@ app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
 
+// Route to get all books
 app.get('/book-data', async (req, res) => {
   try {
     const book = await Book.find();
@@ -83,7 +78,7 @@ app.get('/book-data/:id', async (req, res) => {
 app.post('/data', upload.single('image'), async (req, res) => {
   try {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-    const image = req.file // Get the image data from the multer file object
+    const image = req.file.buffer; // Get the image data from the multer file object
 
     const data = new Data({
       mediaTitle,
