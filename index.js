@@ -79,9 +79,6 @@ app.post('/data', upload.single('image'), async (req, res) => {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
     const image = req.file.buffer; // Get the image data from the multer file object
 
-    if (image.length > 5 * 1024 * 1024) {
-      return alert( 'File size exceeds the limit.');
-    }
     const data = new Data({
       mediaTitle,
       date,
