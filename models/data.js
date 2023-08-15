@@ -25,7 +25,8 @@ const DataSchema = new Schema({
   },
   image: {
     type: Buffer,
-    required: true,
+  required: true,
+  maxlength: 50 * 1024 * 1024
   },
 });
 
