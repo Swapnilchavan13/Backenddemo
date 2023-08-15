@@ -20,7 +20,6 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-
 app.use(express.json());
 app.use(cors());
 
