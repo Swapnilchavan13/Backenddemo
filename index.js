@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 });
 
 // Route to get all books
-app.get('/data', async (req, res) => {
+app.get('/book-data', async (req, res) => {
   try {
     const book = await Book.find();
     if (book) {
@@ -62,7 +62,7 @@ app.get('/data', async (req, res) => {
 });
 
 // Route to get book by id
-app.get('/data/:id', async (req, res) => {
+app.get('/book-data/:id', async (req, res) => {
   try {
     const book = await Book.findById(req.params.id);
     if (!book) {
@@ -116,7 +116,7 @@ app.get('/main', async (req, res) => {
   });
 
 // Route to add a new book
-app.post('/data', async (req, res) => {
+app.post('/book-data', async (req, res) => {
   try {
     const book = new Book({
       title: req.body.title,
