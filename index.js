@@ -5,24 +5,25 @@ const cors = require('cors');
 const multer = require('multer');
 const otpGenerator = require('otp-generator');
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 mongoose.set('strictQuery', false);
 
 const app = express();
 
+
 const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage });
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
+const upload = multer({ storage: storage });
+
 
 // Models
 const Data = require('./models/data');
-const Auth = require('./models/auths');
 const Book = require('./models/books');
+const Auth = require('./models/auths');
 
 // Middleware
 
-app.use(express.json({ limit: '50mb' }))
+app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
