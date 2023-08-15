@@ -13,7 +13,9 @@ const app = express();
 
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 15 * 1024 * 1024 } }); // Set the maximum file size to 15MB
+
 
 // Models
 const Data = require('./models/data');
@@ -21,9 +23,8 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-app.use(express.json({ limit: '15mb' }));
-app.use(express.urlencoded({ extended: true, limit: '15mb' }));
-// app.use(express.json());
+
+app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
