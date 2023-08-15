@@ -3,17 +3,17 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
-const fs = require('fs');
 const otpGenerator = require('otp-generator');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 mongoose.set('strictQuery', false);
 
 const app = express();
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
 
 // Models
 const Data = require('./models/data');
@@ -21,7 +21,8 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-app.use(express.json());
+
+app.use(express.json({ limit: '50mb' }))
 app.use(cors());
 
 // MongoDB Connection
@@ -43,15 +44,40 @@ app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
 
+// Route to get all books
+app.get('/book-data', async (req, res) => {
+  try {
+    const book = await Book.find();
+    if (book) {
+      res.json(book);
+    } else {
+      res.send('Something Went wrong.');
+    }
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Route to get book by id
+app.get('/book-data/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+    res.json(book);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
 // Route to add a new data entry
-app.post('/data', upload.single('file'), async (req, res) => {
+app.post('/data', upload.single('image'), async (req, res) => {
   try {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-    const file = req.file;
-
-    // Save the uploaded file to the local file system
-    const filePath = `uploads/${mediaType}s/${Date.now()}-${file.originalname}`;
-    fs.writeFileSync(filePath, file.buffer); // Write the buffer to the file
+    const image = req.file.buffer; // Get the image data from the multer file object
 
     const data = new Data({
       mediaTitle,
@@ -59,7 +85,7 @@ app.post('/data', upload.single('file'), async (req, res) => {
       mediaSource,
       mediaType,
       keywords,
-      image: fs.readFileSync(filePath),
+      image,
     });
 
     await data.save();
@@ -71,16 +97,40 @@ app.post('/data', upload.single('file'), async (req, res) => {
 });
 
 app.get('/main', async (req, res) => {
+    try {
+      const data = await Data.find();
+  
+      // Encode the image to base64 before sending it to the frontend
+      const dataWithBase64Image = data.map(result => {
+        const base64Image = result.image.toString('base64');
+        return { ...result._doc, image: base64Image };
+      });
+  
+      res.json(dataWithBase64Image);
+    } catch (error) {
+      console.log("Error:", error);
+      res.status(500).send('Server Error');
+    }
+  });
+
+// Route to add a new book
+app.post('/book-data', async (req, res) => {
   try {
-    const data = await Data.find();
-    res.json(data);
+    const book = new Book({
+      title: req.body.title,
+      body: req.body.body,
+      description: req.body.description,
+      image: req.body.image,
+    });
+    await book.save();
+    res.json(book);
   } catch (error) {
     console.log("Error:", error);
     res.status(500).send('Server Error');
   }
 });
 
-// ... (other routes)
+// Rest of your code for '/a', '/auth', and '/autha' routes
 
 // Start the server
 connectDB().then(() => {
