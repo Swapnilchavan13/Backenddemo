@@ -14,8 +14,7 @@ const app = express();
 
 const storage = multer.memoryStorage();
 // const upload = multer({ storage: storage });
-const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Set the maximum file size to 15MB
-
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
 
 // Models
 const Data = require('./models/data');
