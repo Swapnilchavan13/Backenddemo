@@ -79,7 +79,6 @@ app.get('/main', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
-
 // ... (other routes)
 
 // Start the server
