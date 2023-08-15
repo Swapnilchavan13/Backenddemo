@@ -1,29 +1,21 @@
-const otpGenerator = require('otp-generator');
 const express = require('express');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
+const otpGenerator = require('otp-generator');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 mongoose.set('strictQuery', false);
 
 const app = express();
 
 
-// const storage = multer.memoryStorage();
-// // const upload = multer({ storage: storage });
-// const upload = multer({ storage: storage, limits: { fileSize: 12 * 1024 * 1024, } ,}); // Set the maximum file size to 15MB
+const storage = multer.memoryStorage();
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 10 * 1024 * 1024 } }); // Set the maximum file size to 15MB
 
-
-const storage = multer.memoryStorage(); // Store the file data in memory
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10 MB limit (adjust as needed)
-  },
-});
 
 // Models
 const Data = require('./models/data');
