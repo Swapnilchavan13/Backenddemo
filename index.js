@@ -11,6 +11,7 @@ mongoose.set('strictQuery', false);
 
 const app = express();
 
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -20,7 +21,9 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
+// app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
@@ -94,7 +97,6 @@ app.post('/data', upload.single('image'), async (req, res) => {
   }
 });
 
-// Route to get all data entries
 app.get('/main', async (req, res) => {
     try {
       const data = await Data.find();
