@@ -11,10 +11,8 @@ mongoose.set('strictQuery', false);
 
 const app = express();
 
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
 
 // Models
 const Data = require('./models/data');
