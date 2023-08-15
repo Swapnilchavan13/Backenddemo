@@ -11,10 +11,15 @@ mongoose.set('strictQuery', false);
 
 const app = express();
 
-
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'Image'); // Set the destination folder to "Image"
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 const upload = multer({ storage: storage });
-
 
 // Models
 const Data = require('./models/data');
@@ -22,7 +27,6 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-
 app.use(express.json());
 app.use(cors());
 
