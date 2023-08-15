@@ -28,7 +28,11 @@ const Auth = require('./models/auths');
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your actual frontend domain
+  methods: 'GET,POST', // Allow only GET and POST methods
+  credentials: true, // Enable CORS credentials (if needed)
+}));
 
 // MongoDB Connection
 const connectDB = async () => {
