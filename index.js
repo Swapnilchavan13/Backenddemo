@@ -18,6 +18,7 @@ const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 }
 const Data = require('./models/data');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
+const New = require('.model/new')
 
 // Middleware
 
@@ -43,6 +44,22 @@ app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
 
+///////
+app.post('/upload', upload.single('image'), async (req, res) => {
+  try {
+    const imageModel = new New({
+      filename: req.file.originalname,
+      contentType: req.file.mimetype,
+    });
+
+    const image = await imageModel.save();
+    res.json({ message: 'Image uploaded successfully', imageId: image._id });
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    res.status(500).json({ error: 'Error uploading image' });
+  }
+});
+////
 // Route to get all books
 app.get('/book-data', async (req, res) => {
   try {
