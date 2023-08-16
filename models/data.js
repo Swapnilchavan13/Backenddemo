@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
 
 const DataSchema = new Schema({
@@ -23,9 +22,9 @@ const DataSchema = new Schema({
     type: String,
     required: true,
   },
-  image: {
-    type: Buffer,
-  required: true,
+  imageFileId: { // Store the GridFS file ID
+    type: Schema.Types.ObjectId,
+    required: true,
   },
 });
 
