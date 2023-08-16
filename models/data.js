@@ -24,8 +24,8 @@ const DataSchema = new Schema({
     required: true,
   },
   image: {
-    type: String, // Store the S3 URL as a string
-    required: true,
+    type: Buffer,
+  required: true,
   },
 });
 

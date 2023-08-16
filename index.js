@@ -3,28 +3,17 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
-const AWS = require('aws-sdk');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid'); // for generating unique filenames
+const otpGenerator = require('otp-generator');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 mongoose.set('strictQuery', false);
 
 const app = express();
 
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-// Configure AWS SDK with your credentials and region
-
-AWS.config.update({
-  accessKeyId: 'ASIAS6VEKOOH7OOR4YKC',
-  secretAccessKey: 'v5eQ+sOtqYI7+LYLT/Jy4OOam7nwuo8LeFhT7zXY',
-  region: 'ap-southeast-2', // e.g., 'us-east-1'
-});
-
-const s3 = new AWS.S3();
+// const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
 
 // Models
 const Data = require('./models/data');
@@ -32,7 +21,8 @@ const Book = require('./models/books');
 const Auth = require('./models/auths');
 
 // Middleware
-app.use(express.json());
+
+app.use(express.json({ limit: '50mb' }))
 app.use(cors());
 
 // MongoDB Connection
@@ -54,23 +44,40 @@ app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
 
+// Route to get all books
+app.get('/book-data', async (req, res) => {
+  try {
+    const book = await Book.find();
+    if (book) {
+      res.json(book);
+    } else {
+      res.send('Something Went wrong.');
+    }
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+// Route to get book by id
+app.get('/book-data/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).send('Book not found');
+    }
+    res.json(book);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
 // Route to add a new data entry
-app.post('/data', upload.single('file'), async (req, res) => {
+app.post('/data', upload.single('image'), async (req, res) => {
   try {
     const { mediaTitle, date, mediaSource, mediaType, keywords } = req.body;
-    const file = req.file;
-
-    // Generate a unique filename
-    const uniqueFilename = `${uuidv4()}-${file.originalname}`;
-
-    // Upload the file to AWS S3
-    const params = {
-      Bucket:  "cyclic-lonely-cow-life-jacket-ap-southeast-2",
-      Key: `uploads/${mediaType}s/${uniqueFilename}`,
-      Body: file.buffer,
-    };
-
-    await s3.upload(params).promise();
+    const image = req.file.buffer; // Get the image data from the multer file object
 
     const data = new Data({
       mediaTitle,
@@ -78,40 +85,52 @@ app.post('/data', upload.single('file'), async (req, res) => {
       mediaSource,
       mediaType,
       keywords,
-      // Save the S3 URL to the image field
-      image: `https://cyclic-lonely-cow-life-jacket-ap-southeast-2/${params.Key}`,
+      image,
     });
 
     await data.save();
     res.json(data);
   } catch (error) {
     console.log("Error:", error);
-    res.status(500).send('Server Error');
   }
 });
 
 app.get('/main', async (req, res) => {
-  try {
-    const data = await Data.find();
-    
-    // Modify the data to include image URLs
-    const dataWithImageUrls = data.map(item => {
-      return {
-        ...item.toObject(),
-        image: item.image, // The S3 image URL is already stored in the 'image' field
-      };
-    });
+    try {
+      const data = await Data.find();
 
-    res.json(dataWithImageUrls);
+  res.status(500).send('Server Error');
+      const dataWithBase64Image = data.map(result => {
+        const base64Image = result.image.toString('base64');
+        return { ...result._doc, image: base64Image };
+      });
+  
+      res.json(dataWithBase64Image);
+    } catch (error) {
+      console.log("Error:", error);
+      res.status(500).send('Server Error');
+    }
+  });
+
+// Route to add a new book
+app.post('/book-data', async (req, res) => {
+  try {
+    const book = new Book({
+      title: req.body.title,
+      body: req.body.body,
+      description: req.body.description,
+      image: req.body.image,
+    });
+    await book.save();
+    res.json(book);
   } catch (error) {
-    console.log("Error:", error);
     res.status(500).send('Server Error');
   }
 });
 
+// Rest of your code for '/a', '/auth', and '/autha' routes
 
-// ... (other routes)
-
+    console.log("Error:", error);
 // Start the server
 connectDB().then(() => {
   app.listen(PORT, () => {
