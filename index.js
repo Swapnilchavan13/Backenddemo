@@ -157,9 +157,7 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 
     // Save image data and S3 URL to MongoDB
     const uploadedImage = new Upload({
-      // data: file.buffer,
-      // contentType: file.mimetype,
-      s3Url: `https://your-bucket-name.s3.amazonaws.com/${Date.now()}`, // Construct the S3 URL
+      s3Url: `https://your-bucket-name.s3.amazonaws.com/${file.originalname}`, // Construct the S3 URL
     });
 
     await uploadedImage.save();
