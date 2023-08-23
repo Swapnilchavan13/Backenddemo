@@ -3,6 +3,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const cors = require('cors');
 const multer = require('multer');
+const AWS = require('aws-sdk');
 const otpGenerator = require('otp-generator');
 
 const PORT = process.env.PORT;
@@ -19,6 +20,7 @@ const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 }
 const Data = require('./models/data');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
+const Upload = require('./models/uploads');
 
 // Middleware
 
@@ -39,12 +41,23 @@ const connectDB = async () => {
   }
 };
 
+
+AWS.config.update({
+  region: process.env.AWS_REGION,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  sessionToken: process.env.AWS_SESSION_TOKEN,
+});
+
+const s3 = new AWS.S3();
+
+
+// Route to get all books
 // Routes
 app.get('/', (req, res) => {
   res.send({ title: 'Backend is Running...' });
 });
 
-// Route to get all books
 app.get('/book-data', async (req, res) => {
   try {
     const book = await Book.find();
@@ -125,6 +138,37 @@ app.post('/book-data', async (req, res) => {
     res.json(book);
   } catch (error) {
     res.status(500).send('Server Error');
+  }
+});
+
+
+app.post('/upload', upload.single('upload'), async (req, res) => {
+  const file = req.file;
+
+  try {
+    // Upload image to AWS S3
+    const params = {
+      Bucket: 'cyclic-lonely-cow-life-jacket-ap-southeast-2', // Replace with your S3 bucket name
+      Key: Date.now() + '-' + file.originalname,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    const s3Response = await s3.upload(params).promise();
+
+    // Save image data and S3 URL to MongoDB
+    const uploadedImage = new Upload({
+      data: file.buffer,
+      contentType: file.mimetype,
+      s3Url: s3Response.Location, // Save the S3 URL
+    });
+
+    await uploadedImage.save();
+
+    res.status(200).json({ message: 'Image uploaded successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while uploading the image.' });
   }
 });
 
