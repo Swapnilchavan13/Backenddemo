@@ -20,7 +20,7 @@ const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 }
 const Data = require('./models/data');
 const Book = require('./models/books');
 const Auth = require('./models/auths');
-const Upload = require('./models/uploads');
+const Upload = require('./models/upload');
 
 // Middleware
 
