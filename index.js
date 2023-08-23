@@ -172,6 +172,17 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
   }
 });
 
+app.get('/uploaded-images', async (req, res) => {
+  try {
+    const uploadedImages = await Upload.find();
+    res.json(uploadedImages);
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).send('Server Error');
+  }
+});
+
+
 // Rest of your code for '/a', '/auth', and '/autha' routes
 
     // console.log("Error:", error);
