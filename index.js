@@ -142,6 +142,7 @@ app.post('/book-data', async (req, res) => {
 });
 
 
+
 app.post('/upload', upload.single('upload'), async (req, res) => {
   const file = req.file;
 
@@ -155,12 +156,11 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
     };
 
     const s3Response = await s3.upload(params).promise();
+    const s3Url = s3Response.Location; // Save the S3 URL
 
-    // Save image data and S3 URL to MongoDB
+    // Create and save an Upload document with S3 URL
     const uploadedImage = new Upload({
-      data: file.buffer,
-      contentType: file.mimetype,
-      s3Url: s3Response.Location, // Save the S3 URL
+      s3Url,
     });
 
     await uploadedImage.save();
@@ -171,6 +171,7 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
     res.status(500).json({ error: 'An error occurred while uploading the image.' });
   }
 });
+
 
 app.get('/uploaded-images', async (req, res) => {
   try {
