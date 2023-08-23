@@ -174,7 +174,7 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
 
 // Rest of your code for '/a', '/auth', and '/autha' routes
 
-    console.log("Error:", error);
+    // console.log("Error:", error);
 // Start the server
 connectDB().then(() => {
   app.listen(PORT, () => {
