@@ -147,20 +147,19 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
   const file = req.file;
 
   try {
-    // Upload image to AWS S3
-    const params = {
+    // Upload image to AWS S3 using s3.putObject
+    const s3Response = await s3.putObject({
       Bucket: 'cyclic-lonely-cow-life-jacket-ap-southeast-2', // Replace with your S3 bucket name
       Key: Date.now() + '-' + file.originalname,
       Body: file.buffer,
       ContentType: file.mimetype,
-    };
+    }).promise();
 
-    const s3Response = await s3.upload(params).promise();
-    const s3Url = s3Response.Location; // Save the S3 URL
-
-    // Create and save an Upload document with S3 URL
+    // Save image data and S3 URL to MongoDB
     const uploadedImage = new Upload({
-      s3Url,
+      data: file.buffer,
+      contentType: file.mimetype,
+      s3Url: `https://your-bucket-name.s3.amazonaws.com/${s3Response.Key}`, // Construct the S3 URL
     });
 
     await uploadedImage.save();
@@ -171,7 +170,6 @@ app.post('/upload', upload.single('upload'), async (req, res) => {
     res.status(500).json({ error: 'An error occurred while uploading the image.' });
   }
 });
-
 
 app.get('/uploaded-images', async (req, res) => {
   try {
