@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const AWS = require('aws-sdk');
 const otpGenerator = require('otp-generator');
+const path = require('path');
 
 const PORT = process.env.PORT;
 
@@ -25,7 +26,7 @@ const Upload = require('./models/upload');
 
 // Middleware
 
-// app.use(express.json({ limit: '50mb' }))
+app.use(express.json({ limit: '50mb' }))
 app.use(express.static(__dirname, 'public'))
 app.use(cors());
 
