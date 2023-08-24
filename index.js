@@ -189,6 +189,7 @@ app.post('/book-data', async (req, res) => {
 // const uploadedImage = require('multer')({ dest: path.join(__dirname, 'public/photos') })
 app.post('/upload', upload.single('upload'), async function(req, res){
     const requestBody = {
+      id:Date.now(),
       upload: req.file.path
     }
     const uploadImage = new Upload(requestBody)
@@ -209,7 +210,7 @@ app.get('/uploaded-images', async (req, res) => {
     
     const imagesWithFullUrls = uploadImage.map(image => ({
       _id: image._id,
-      images: `${req.protocol}://${req.get('host')}${image.upload}`
+      upload: `${req.protocol}://${req.get('host')}${image.upload}`
     }));
     
     res.json(imagesWithFullUrls);
