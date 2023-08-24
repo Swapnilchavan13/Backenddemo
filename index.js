@@ -6,6 +6,8 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 const otpGenerator = require('otp-generator');
 const path = require('path');
+const fs = require('fs');
+
 
 const PORT = process.env.PORT;
 
@@ -13,10 +15,21 @@ mongoose.set('strictQuery', false);
 
 const app = express();
 
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
 // const upload = multer({ storage: storage });
-// const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
-const upload = require('multer')({ dest: path.join(__dirname, 'public/photos') })
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, 'public/images'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + '-' + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 
 // Models
 const Data = require('./models/data');
@@ -26,8 +39,9 @@ const Upload = require('./models/upload');
 
 // Middleware
 
-app.use(express.json({ limit: '50mb' }))
-app.use(express.static(__dirname, 'public'))
+// app.use(express.json({ limit: '50mb' }))
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(cors());
 
 // MongoDB Connection
@@ -192,9 +206,15 @@ app.post('/upload', upload.single('upload'), async function(req, res){
 app.get('/uploaded-images', async (req, res) => {
   try {
     const uploadedImages = await Upload.find();
-    res.json(uploadedImages);
+    
+    const imagesWithFullUrls = uploadedImages.map(image => ({
+      _id: image._id,
+      images: `${req.protocol}://${req.get('host')}${image.images}`
+    }));
+    
+    res.json(imagesWithFullUrls);
   } catch (error) {
-    console.log("Error:", error);
+    console.error('Error:', error);
     res.status(500).send('Server Error');
   }
 });
