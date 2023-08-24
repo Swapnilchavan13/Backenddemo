@@ -14,7 +14,8 @@ const app = express();
 
 const storage = multer.memoryStorage();
 // const upload = multer({ storage: storage });
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
+// const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // Set the maximum file size to 15MB
+const upload = require('multer')({ dest: path.join(__dirname, 'public/photos') })
 
 // Models
 const Data = require('./models/data');
@@ -25,6 +26,7 @@ const Upload = require('./models/upload');
 // Middleware
 
 app.use(express.json({ limit: '50mb' }))
+app.use(express.static(__dirname, 'public'))
 app.use(cors());
 
 // MongoDB Connection
@@ -143,31 +145,48 @@ app.post('/book-data', async (req, res) => {
 
 
 
-app.post('/upload', upload.single('upload'), async (req, res) => {
-  const file = req.file;
+// app.post('/upload', upload.single('upload'), async (req, res) => {
+//   const file = req.file;
 
-  try {
-    // Upload image to AWS S3 using s3.putObject
-    const s3Response = await s3.putObject({
-      Bucket: 'cyclic-lonely-cow-life-jacket-ap-southeast-2', // Replace with your S3 bucket name
-      Key: Date.now() + '-' + file.originalname,
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    }).promise();
+//   try {
+//     // Upload image to AWS S3 using s3.putObject
+//     const s3Response = await s3.putObject({
+//       Bucket: 'cyclic-lonely-cow-life-jacket-ap-southeast-2', // Replace with your S3 bucket name
+//       Key: Date.now() + '-' + file.originalname,
+//       Body: file.buffer,
+//       ContentType: file.mimetype,
+//     }).promise();
 
-    // Save image data and S3 URL to MongoDB
-    const uploadedImage = new Upload({
-      s3Url: `https://cyclic-lonely-cow-life-jacket-ap-southeast-2.s3.amazonaws.com/${file.originalname}`, // Construct the S3 URL
-    });
+//     // Save image data and S3 URL to MongoDB
+//     const uploadedImage = new Upload({
+//       s3Url: `https://cyclic-lonely-cow-life-jacket-ap-southeast-2.s3.amazonaws.com/${file.originalname}`, // Construct the S3 URL
+//     });
 
-    await uploadedImage.save();
+//     await uploadedImage.save();
 
-    res.status(200).json({ message: 'Image uploaded successfully.' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred while uploading the image.' });
-  }
-});
+//     res.status(200).json({ message: 'Image uploaded successfully.' });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'An error occurred while uploading the image.' });
+//   }
+// });
+
+// const uploadedImage = require('multer')({ dest: path.join(__dirname, 'public/photos') })
+app.post('/upload', upload.single('upload'), async function(req, res){
+    const requestBody = {
+        images: req.file.path
+    }
+    const uploadedImage = new Upload(requestBody)
+
+    try{
+        await uploadedImage.save()
+        res.status(201).send()
+
+    }catch(e){
+        res.status(400).send(e)
+    }
+
+})
 
 app.get('/uploaded-images', async (req, res) => {
   try {

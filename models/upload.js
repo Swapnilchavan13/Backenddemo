@@ -1,13 +1,10 @@
 const mongoose = require('mongoose');
 
 const upload = new mongoose.Schema({
-    s3Url: {
-        type: String,
-        required: true,
-      },
-  data: Buffer,
-  contentType: String,
-  uploadDate: { type: Date, default: Date.now },
+images: {
+    type: String, // Assuming you're storing the image path as a string
+    required: true
+}
 });
 
 const Upload = mongoose.model('Upload', upload);
