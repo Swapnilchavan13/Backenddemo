@@ -191,10 +191,10 @@ app.post('/upload', upload.single('upload'), async function(req, res){
     const requestBody = {
         images: req.file.path
     }
-    const uploadedImage = new Upload(requestBody)
+    const upload = new Upload(requestBody)
 
     try{
-        await uploadedImage.save()
+        await upload.save()
         res.status(201).send()
 
     }catch(e){
@@ -205,9 +205,9 @@ app.post('/upload', upload.single('upload'), async function(req, res){
 
 app.get('/uploaded-images', async (req, res) => {
   try {
-    const uploadedImages = await Upload.find();
+    const upload = await Upload.find();
     
-    const imagesWithFullUrls = uploadedImages.map(image => ({
+    const imagesWithFullUrls = upload.map(image => ({
       _id: image._id,
       images: `${req.protocol}://${req.get('host')}${image.images}`
     }));
