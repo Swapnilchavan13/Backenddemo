@@ -1,10 +1,15 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+const mongoose = require('mongoose');
 const app = express();
 
 app.use(express.json())
 app.use(cors());
+
+const PORT = process.env.PORT;
+
+mongoose.set('strictQuery', false);
 
 // MongoDB Connection
 const connectDB = async () => {
@@ -20,7 +25,7 @@ const connectDB = async () => {
   }
 };
 
-const PORT = process.env.PORT;
+
 
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Every thinngig good');
