@@ -3,8 +3,6 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
-const Address = require('../models/address');
-
 
 app.use(express.json())
 app.use(cors());
@@ -27,12 +25,15 @@ const connectDB = async () => {
   }
 };
 
+const Upload = require('./models/upload');
+const Address = required('./models/address');
+
+
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
 
-// Create a new address
 app.post('/address', async (req, res) => {
   try {
     const newAddress = await Address.create(req.body);
