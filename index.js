@@ -3,6 +3,8 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
+const Address = require('../models/address');
+
 
 app.use(express.json())
 app.use(cors());
@@ -25,11 +27,31 @@ const connectDB = async () => {
   }
 };
 
-
-
 app.get('/', function (req, res) {
-   res.send('Hello Swapnil Every thinngig good');
+   res.send('Hello Swapnil Everything is good');
 })
+
+
+// Create a new address
+router.post('/address', async (req, res) => {
+  try {
+    const newAddress = await Address.create(req.body);
+    res.status(201).json(newAddress);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get all addresses
+router.get('/address', async (req, res) => {
+  try {
+    const addresses = await Address.find();
+    res.json(addresses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 
 connectDB().then(() => {
   app.listen(PORT, () => {
