@@ -25,34 +25,14 @@ const connectDB = async () => {
   }
 };
 
-const Upload = require('./models/upload');
-const Address = required('./models/address');
-
 
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
-
-app.post('/address', async (req, res) => {
-  try {
-    const newAddress = await Address.create(req.body);
-    res.status(201).json(newAddress);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// Get all addresses
-app.get('/address', async (req, res) => {
-  try {
-    const addresses = await Address.find();
-    res.json(addresses);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
+app.get('/hi', function (req, res) {
+  res.send('Hi Swapnil');
+})
 
 connectDB().then(() => {
   app.listen(PORT, () => {
