@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
 
 
 // Create a new address
-router.post('/address', async (req, res) => {
+app.post('/address', async (req, res) => {
   try {
     const newAddress = await Address.create(req.body);
     res.status(201).json(newAddress);
@@ -43,7 +43,7 @@ router.post('/address', async (req, res) => {
 });
 
 // Get all addresses
-router.get('/address', async (req, res) => {
+app.get('/address', async (req, res) => {
   try {
     const addresses = await Address.find();
     res.json(addresses);
