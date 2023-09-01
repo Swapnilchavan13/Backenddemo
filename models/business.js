@@ -12,22 +12,31 @@ const businessSchema = new mongoose.Schema({
   },
 //   productPhotos: [{}],
 //   productVideos: [{}],
-  selectedAdTypes: [String],
-  selectedAdjectives: [String],
+  selectedAdTypes: {
+    type:[String],
+  },
+  selectedAdjectives: {
+    type:[String],
+  },
   selectedDuration: {
     type: String,
   },
-  selectedModelTypes: [String],
+  selectedModelTypes: {
+    type:[String],
+  },
+
 //   storePhotos: [{}],
 //   storeVideos: [{}],
-  tagline: {
-    text: {
-      type: String,
-    },
-    dataType: {
-      type: String,
-    },
-  },
+//   tagline: {
+//     text: {
+//       type: String,
+//     },
+//     dataType: {
+//       type: String,
+//     },
+tagline: {
+    type: String,
+}
 });
 
 module.exports = mongoose.model('Business', businessSchema);
