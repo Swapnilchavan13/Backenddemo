@@ -26,6 +26,7 @@ const connectDB = async () => {
 };
 
 const Address = require('./models/address');
+const Business = require('./models/business')
 
 
 app.get('/', function (req, res) {
@@ -49,6 +50,19 @@ app.get('/address', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
+});
+
+app.post('/business', async (req, res) => {
+  try {
+    const newBusinesses = await Business.create(req.body);
+    res.status(201).json(newBusinesses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/business', async (req, res) => {
+  res.send('Businesss is working');
 });
 
 connectDB().then(() => {
