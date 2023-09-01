@@ -7,9 +7,9 @@ const businessSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  logoFile: {
-    type: Buffer
-  },
+//   logoFile: {
+//     type: Buffer
+//   },
 //   productPhotos: [{}],
 //   productVideos: [{}],
   selectedAdTypes: {
