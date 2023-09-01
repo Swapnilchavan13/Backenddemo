@@ -36,7 +36,7 @@ selectedAttributes: {
   },
 
   budget: {
-    type: String,
+    type: Number,
 }
 });
 
