@@ -27,6 +27,7 @@ const connectDB = async () => {
 
 const Address = require('./models/address');
 const Business = require('./models/business')
+const Campaign = require('./models/campaign')
 
 
 app.get('/', function (req, res) {
@@ -66,6 +67,25 @@ app.get('/business', async (req, res) => {
   try {
     const businesses = await Business.find();
     res.json(businesses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/campaign', async (req, res) => {
+  try {
+    const newCampaigns = await Campaign.create(req.body);
+    res.status(201).json(newCampaigns);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+//Get All campaign Data
+app.get('/campaign', async (req, res) => {
+  try {
+    const campaigns = await Campaign.find();
+    res.json(campaigns);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
