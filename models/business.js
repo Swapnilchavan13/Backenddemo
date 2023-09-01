@@ -24,7 +24,6 @@ const businessSchema = new mongoose.Schema({
   selectedModelTypes: {
     type:[String],
   },
-
 //   storePhotos: [{}],
 //   storeVideos: [{}],
 //   tagline: {
