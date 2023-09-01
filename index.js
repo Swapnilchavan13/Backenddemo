@@ -2,13 +2,13 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
+
 const app = express();
 
 app.use(express.json())
 app.use(cors());
 
 const PORT = process.env.PORT;
-
 mongoose.set('strictQuery', false);
 
 // MongoDB Connection
@@ -25,7 +25,7 @@ const connectDB = async () => {
   }
 };
 
-const Address = require('./models/address');
+// const Address = require('./models/address');
 // const Business = require('./models/business')
 // const Campaign = require('./models/campaign')
 
@@ -35,23 +35,27 @@ app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
-app.post('/address', async (req, res) => {
-  try {
-    res.status(201).json(newAddress);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
+app.get('/work', function (req, res) {
+  res.send('Its Working');
+})
 
-// Get all addresses
-app.get('/address', async (req, res) => {
-  try {
-    const addresses = await Address.find();
-    res.json(addresses);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
+// app.post('/address', async (req, res) => {
+//   try {
+//     res.status(201).json(newAddress);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
+
+// // Get all addresses
+// app.get('/address', async (req, res) => {
+//   try {
+//     const addresses = await Address.find();
+//     res.json(addresses);
+//   } catch (error) {
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// });
 // // Add Business Data
 // app.post('/business', async (req, res) => {
 //   try {
