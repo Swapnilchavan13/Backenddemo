@@ -43,8 +43,12 @@ app.post('/address', async (req, res) => {
 
 // Get all addresses
 app.get('/address', async (req, res) => {
-  res.send('Address is working');
-
+  try {
+    const addresses = await Address.find();
+    res.json(addresses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 connectDB().then(() => {
