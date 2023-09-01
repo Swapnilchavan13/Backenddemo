@@ -41,3 +41,4 @@ selectedAttributes: {
 });
 
 module.exports = mongoose.model('Campaign', campaignSchema);
+
