@@ -10,16 +10,16 @@ const businessSchema = new mongoose.Schema({
   logoFile: {
     type: Buffer
   },
-  productPhotos: [{}],
-  productVideos: [{}],
+//   productPhotos: [{}],
+//   productVideos: [{}],
   selectedAdTypes: [String],
   selectedAdjectives: [String],
   selectedDuration: {
     type: String,
   },
   selectedModelTypes: [String],
-  storePhotos: [{}],
-  storeVideos: [{}],
+//   storePhotos: [{}],
+//   storeVideos: [{}],
   tagline: {
     text: {
       type: String,
