@@ -2,13 +2,13 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 const app = express();
 
 app.use(express.json())
 app.use(cors());
 
 const PORT = process.env.PORT;
+
 mongoose.set('strictQuery', false);
 
 // MongoDB Connection
@@ -25,75 +25,71 @@ const connectDB = async () => {
   }
 };
 
-// const Address = require('./models/address');
-// const Business = require('./models/business')
-// const Campaign = require('./models/campaign')
+const Address = require('./models/address');
+const Business = require('./models/business')
+const Campaign = require('./models/campaign')
 
-const newAddress = await Address.create(req.body);
 
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
-app.get('/work', function (req, res) {
-  res.send('Its Working');
-})
+app.post('/address', async (req, res) => {
+  try {
+    const newAddress = await Address.create(req.body);
+    res.status(201).json(newAddress);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
-// app.post('/address', async (req, res) => {
-//   try {
-//     res.status(201).json(newAddress);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
+// Get all addresses
+app.get('/address', async (req, res) => {
+  try {
+    const addresses = await Address.find();
+    res.json(addresses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+// Add Business Data
+app.post('/business', async (req, res) => {
+  try {
+    const newBusinesses = await Business.create(req.body);
+    res.status(201).json(newBusinesses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
-// // Get all addresses
-// app.get('/address', async (req, res) => {
-//   try {
-//     const addresses = await Address.find();
-//     res.json(addresses);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
-// // Add Business Data
-// app.post('/business', async (req, res) => {
-//   try {
-//     const newBusinesses = await Business.create(req.body);
-//     res.status(201).json(newBusinesses);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
+//Get All business Data
+app.get('/business', async (req, res) => {
+  try {
+    const businesses = await Business.find();
+    res.json(businesses);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
-// //Get All business Data
-// app.get('/business', async (req, res) => {
-//   try {
-//     const businesses = await Business.find();
-//     res.json(businesses);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
+app.post('/campaign', async (req, res) => {
+  try {
+    const newCampaigns = await Campaign.create(req.body);
+    res.status(201).json(newCampaigns);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
-// app.post('/campaign', async (req, res) => {
-//   try {
-//     const newCampaigns = await Campaign.create(req.body);
-//     res.status(201).json(newCampaigns);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
-
-// //Get All campaign Data
-// app.get('/campaign', async (req, res) => {
-//   try {
-//     const campaigns = await Campaign.find();
-//     res.json(campaigns);
-//   } catch (error) {
-//     res.status(500).json({ error: 'Server error' });
-//   }
-// });
+//Get All campaign Data
+app.get('/campaign', async (req, res) => {
+  try {
+    const campaigns = await Campaign.find();
+    res.json(campaigns);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 connectDB().then(() => {
   app.listen(PORT, () => {
