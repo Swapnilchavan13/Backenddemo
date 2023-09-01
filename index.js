@@ -29,6 +29,7 @@ const Address = require('./models/address');
 const Business = require('./models/business')
 const Campaign = require('./models/campaign')
 
+const newAddress = await Address.create(req.body);
 
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
@@ -36,7 +37,6 @@ app.get('/', function (req, res) {
 
 app.post('/address', async (req, res) => {
   try {
-    const newAddress = await Address.create(req.body);
     res.status(201).json(newAddress);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });

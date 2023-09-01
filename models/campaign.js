@@ -23,13 +23,13 @@ selectedAttributes: {
     type: String,
   },
   mediaVideo: {
-    type:String,
+    type: Boolean,
   },
   mediaSlide: {
-    type:String,
+    type: Boolean,
   },
   media3D: {
-    type: String,
+    type: Boolean,
   },
   detail: {
     type:String,
