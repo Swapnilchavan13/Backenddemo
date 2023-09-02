@@ -133,12 +133,27 @@ app.get('/campaign', async (req, res) => {
   }
 });
 
-app.put('/campaign/:id', async (req, res) => {
+// Update an address without specifying an ID
+app.put('/campaign', async (req, res) => {
   try {
-    const updatedCampaign = await Campaign.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedCampaign) {
-      return res.status(404).json({ error: 'Campaign not found' });
+    // Assuming you have a unique identifier for the address, e.g., email
+    const { _id } = req.body;
+
+    if (!_id) {
+      return res.status(400).json({ error: 'Id is required to update address' });
     }
+
+    // Find the Campaign by id and update it
+    const updatedCampaign = await Campaign.findOneAndUpdate(
+      { _id },
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedCampaign) {
+      return res.status(404).json({ error: 'Id not found' });
+    }
+
     res.json(updatedCampaign);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
