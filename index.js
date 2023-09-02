@@ -57,21 +57,21 @@ app.get('/address', async (req, res) => {
 app.put('/address', async (req, res) => {
   try {
     // Assuming you have a unique identifier for the address, e.g., email
-    const { email } = req.body;
+    const { _id } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ error: 'Email is required to update address' });
+    if (!_id) {
+      return res.status(400).json({ error: 'Id is required to update address' });
     }
 
     // Find the address by email and update it
     const updatedAddress = await Address.findOneAndUpdate(
-      { email },
+      { _id },
       req.body,
       { new: true }
     );
 
     if (!updatedAddress) {
-      return res.status(404).json({ error: 'Address not found' });
+      return res.status(404).json({ error: 'Id not found' });
     }
 
     res.json(updatedAddress);
