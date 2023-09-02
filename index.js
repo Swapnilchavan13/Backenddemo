@@ -52,6 +52,21 @@ app.get('/address', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+app.put('/address/:id', async (req, res) => {
+  try {
+    const updatedAddress = await Address.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedAddress) {
+      return res.status(404).json({ error: 'Address not found' });
+    }
+    res.json(updatedAddress);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
 // Add Business Data
 app.post('/business', async (req, res) => {
   try {
@@ -72,6 +87,19 @@ app.get('/business', async (req, res) => {
   }
 });
 
+app.put('/business/:id', async (req, res) => {
+  try {
+    const updatedBusiness = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedBusiness) {
+      return res.status(404).json({ error: 'Business not found' });
+    }
+    res.json(updatedBusiness);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
 app.post('/campaign', async (req, res) => {
   try {
     const newCampaigns = await Campaign.create(req.body);
@@ -86,6 +114,18 @@ app.get('/campaign', async (req, res) => {
   try {
     const campaigns = await Campaign.find();
     res.json(campaigns);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.put('/campaign/:id', async (req, res) => {
+  try {
+    const updatedCampaign = await Campaign.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedCampaign) {
+      return res.status(404).json({ error: 'Campaign not found' });
+    }
+    res.json(updatedCampaign);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
