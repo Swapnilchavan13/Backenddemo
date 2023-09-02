@@ -16,7 +16,7 @@ const addressSchema = new mongoose.Schema({
   contactPerson: {
     type:String,
   },
-  description: {
+  des: {
     type:String,
   },
   email: {
