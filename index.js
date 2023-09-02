@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 app.use(express.json())
-app.use(cors());
+  app.use(cors());
 
 const PORT = process.env.PORT;
 
@@ -53,18 +53,32 @@ app.get('/address', async (req, res) => {
   }
 });
 
-app.put('/address/:id', async (req, res) => {
+// Update an address without specifying an ID
+app.put('/address', async (req, res) => {
   try {
-    const updatedAddress = await Address.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Assuming you have a unique identifier for the address, e.g., email
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required to update address' });
+    }
+
+    // Find the address by email and update it
+    const updatedAddress = await Address.findOneAndUpdate(
+      { email },
+      req.body,
+      { new: true }
+    );
+
     if (!updatedAddress) {
       return res.status(404).json({ error: 'Address not found' });
     }
+
     res.json(updatedAddress);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
 
 
 // Add Business Data
