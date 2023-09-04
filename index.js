@@ -101,12 +101,26 @@ app.get('/business', async (req, res) => {
   }
 });
 
-app.put('/business/:id', async (req, res) => {
+app.put('/business', async (req, res) => {
   try {
-    const updatedBusiness = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedBusiness) {
-      return res.status(404).json({ error: 'Business not found' });
+    // Assuming you have a unique identifier for the address, e.g., id
+    const { _id } = req.body;
+
+    if (!_id) {
+      return res.status(400).json({ error: 'Id is required to update address' });
     }
+
+    // Find the Business by id and update it
+    const updatedBusiness = await Business.findOneAndUpdate(
+      { _id },
+      req.body,
+      { new: true }
+    );
+
+    if (!updatedBusiness) {
+      return res.status(404).json({ error: 'Id not found' });
+    }
+
     res.json(updatedBusiness);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
