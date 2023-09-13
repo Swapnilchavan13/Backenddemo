@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const campaignSchema = new mongoose.Schema({
+      camp_id:{
+        type: String,
+      },
       selectedVillages: {
         type: [String],
       },
