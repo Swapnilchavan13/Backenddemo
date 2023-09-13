@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const addressSchema = new mongoose.Schema({
   register_id: {
-    type:String
+    type:String,
   },
   address: {
     type:String,
