@@ -35,6 +35,7 @@ app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
+//User Signup Details
 app.post('/signup', async (req, res) => {
   try {
     const newSignup = await Signup.create(req.body);
@@ -44,6 +45,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Post all addresses
 app.post('/address', async (req, res) => {
   try {
     const newAddress = await Address.create(req.body);
