@@ -45,6 +45,16 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Get Signup Details
+app.get('/signup', async (req, res) => {
+  try {
+    const signups = await Signup.find();
+    res.json(signups);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Post all addresses
 app.post('/address', async (req, res) => {
   try {
