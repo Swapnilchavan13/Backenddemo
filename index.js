@@ -28,11 +28,21 @@ const connectDB = async () => {
 const Address = require('./models/address');
 const Business = require('./models/business')
 const Campaign = require('./models/campaign')
+const Signup = require('./models/signup')
 
 
 app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
+
+app.post('/signup', async (req, res) => {
+  try {
+    const newSignup = await Signup.create(req.body);
+    res.status(201).json(newSignup);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 app.post('/address', async (req, res) => {
   try {
@@ -63,7 +73,7 @@ app.put('/address', async (req, res) => {
       return res.status(400).json({ error: 'Id is required to update address' });
     }
 
-    // Find the address by email and update it
+    // Find the address by id and update it
     const updatedAddress = await Address.findOneAndUpdate(
       { _id },
       req.body,
@@ -150,7 +160,7 @@ app.get('/campaign', async (req, res) => {
 // Update an address without specifying an ID
 app.put('/campaign', async (req, res) => {
   try {
-    // Assuming you have a unique identifier for the address, e.g., email
+    // Assuming you have a unique identifier for the address, e.g., id
     const { _id } = req.body;
 
     if (!_id) {
