@@ -22,7 +22,7 @@ const businessSchema = new mongoose.Schema({
   selectedModelTypes: {
     type:[String],
   },
-tagline: {
+  tagline: {
     type: String,
 }
 });
