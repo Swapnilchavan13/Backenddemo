@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const businessSchema = new mongoose.Schema({
+  media_id:{
+    type: String,
+  },
   businessName: {
     type: String,
   },
