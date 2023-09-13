@@ -149,7 +149,6 @@ app.put('/business', async (req, res) => {
   }
 });
 
-
 app.post('/campaign', async (req, res) => {
   try {
     const newCampaigns = await Campaign.create(req.body);

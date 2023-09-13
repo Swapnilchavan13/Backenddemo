@@ -7,11 +7,6 @@ const businessSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-//   logoFile: {
-//     type: Buffer
-//   },
-//   productPhotos: [{}],
-//   productVideos: [{}],
   selectedAdTypes: {
     type:[String],
   },
@@ -24,15 +19,6 @@ const businessSchema = new mongoose.Schema({
   selectedModelTypes: {
     type:[String],
   },
-//   storePhotos: [{}],
-//   storeVideos: [{}],
-//   tagline: {
-//     text: {
-//       type: String,
-//     },
-//     dataType: {
-//       type: String,
-//     },
 tagline: {
     type: String,
 }
