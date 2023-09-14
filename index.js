@@ -118,6 +118,19 @@ app.post('/imgandvid', async (req, res) => {
   }
 });
 
+// Define a route for retrieving Imgandvid entries
+app.get('/imgandvid', async (req, res) => {
+  try {
+    // Use Mongoose to find all Imgandvid entries in the database
+    const imgAndVidEntries = await Imgandvid.find();
+
+    res.status(200).json(imgAndVidEntries);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching the data.' });
+  }
+});
+
+
 // Add Business Data
 app.post('/business', async (req, res) => {
   try {
