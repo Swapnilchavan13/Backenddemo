@@ -29,6 +29,7 @@ const Address = require('./models/address');
 const Business = require('./models/business')
 const Campaign = require('./models/campaign')
 const Signup = require('./models/signup')
+const Imgandvid = require('./models/imgandvid')
 
 
 app.get('/', function (req, res) {
@@ -102,6 +103,20 @@ app.put('/address', async (req, res) => {
   }
 });
 
+// Define a route for creating a new Imgandvid entry
+app.post('/imgandvid', async (req, res) => {
+  try {
+    // Create a new Imgandvid instance based on the request body
+    const newImgandvid = new Imgandvid(req.body);
+
+    // Save the new Imgandvid entry to the database
+    await newImgandvid.save();
+
+    res.status(201).json(newImgandvid);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while saving the data.' });
+  }
+});
 
 // Add Business Data
 app.post('/business', async (req, res) => {
