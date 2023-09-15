@@ -4,7 +4,10 @@ const addressSchema = new mongoose.Schema({
   register_id: {
     type:String,
   },
-  address: {
+  address1: {
+    type:String,
+  },
+  address2: {
     type:String,
   },
   businessType1: {
@@ -32,6 +35,9 @@ const addressSchema = new mongoose.Schema({
     type:String,
   },
   phone: {
+    type:String,
+  },
+  businessphone: {
     type:String,
   },
   pin: {
