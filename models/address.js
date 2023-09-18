@@ -10,6 +10,8 @@ const addressSchema = new mongoose.Schema({
   address2: {
     type:String,
   },
+
+  
   businessType1: {
     type:String,
   },
