@@ -25,6 +25,7 @@ const businessSchema = new mongoose.Schema({
   tagline: {
     type: String,
 }
+
 });
 
 module.exports = mongoose.model('Business', businessSchema);
