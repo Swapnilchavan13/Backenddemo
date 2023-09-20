@@ -79,7 +79,7 @@ app.get('/address', async (req, res) => {
 // Get an address by ID
 app.get('/address/:id', async (req, res) => {
   try {
-    const address = await Address.findById(req.params.id);
+    const address = await Address.findById(req.params.register_id);
     if (!address) {
       return res.status(404).json({ error: 'Address not found' });
     }
