@@ -42,6 +42,7 @@ app.post('/signup', async (req, res) => {
 
     if (existingUser) {
       // User with the same email already exists
+      alert("Email address already in use")
       return res.status(400).json({ error: 'Email address already in use' });
     }
 
