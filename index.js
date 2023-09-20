@@ -42,7 +42,7 @@ app.post('/signup', async (req, res) => {
     const newSignup = await Signup.create(req.body);
     res.status(201).json(newSignup);
   } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(501).json({ error: 'Server error' });
   }
 });
 
@@ -89,8 +89,6 @@ app.get('/address/:register_id', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-
 
 // Update an address without specifying an ID
 app.put('/address', async (req, res) => {
