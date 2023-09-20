@@ -36,22 +36,14 @@ app.get('/', function (req, res) {
    res.send('Hello Swapnil Everything is good');
 })
 
+//User Signup Details
 app.post('/signup', async (req, res) => {
   try {
-    const existingUser = await User.findOne({ email: req.body.email });
-
-    if (existingUser) {
-      // User with the same email already exists
-      alert("Email address already in use")
-      return res.status(400).json({ error: 'Email address already in use' });
-    }
-
     const newSignup = await Signup.create(req.body);
     res.status(201).json(newSignup);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
-
 });
 
 // Get Signup Details
@@ -148,9 +140,9 @@ app.get('/imgandvid', async (req, res) => {
     // Use Mongoose to find all Imgandvid entries in the database
     const imgAndVidEntries = await Imgandvid.find();
 
-    res.status(500).json({ error: 'An error occurred while fetching the data.' });
     res.status(200).json(imgAndVidEntries);
   } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching the data.' });
   }
 });
 
