@@ -76,18 +76,20 @@ app.get('/address', async (req, res) => {
   }
 });
 
-// Get an address by ID
-app.get('/address/:id', async (req, res) => {
+// Get addresses by register_id
+app.get('/address/:register_id', async (req, res) => {
   try {
-    const address = await Address.findById(req.params.register_id);
-    if (!address) {
-      return res.status(404).json({ error: 'Address not found' });
+    const registerId = req.params.register_id;
+    const addresses = await Address.find({ register_id: registerId });
+    if (addresses.length === 0) {
+      return res.status(404).json({ error: 'No addresses found for the specified register_id' });
     }
-    res.json(address);
+    res.json(addresses);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 // Update an address without specifying an ID
