@@ -167,6 +167,20 @@ app.get('/business', async (req, res) => {
   }
 });
 
+// Get business by media_id
+app.get('/business/:media_id', async (req, res) => {
+  try {
+    const mediaId = req.params.media_id;
+    const business = await Business.find({ media_id: mediaId });
+    if (business.length === 0) {
+      return res.status(404).json({ error: 'No business found for the specified media_id' });
+    }
+    res.json(business);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.put('/business', async (req, res) => {
   try {
     // Assuming you have a unique identifier for the address, e.g., id
@@ -207,6 +221,20 @@ app.get('/campaign', async (req, res) => {
   try {
     const campaigns = await Campaign.find();
     res.json(campaigns);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get campaign by camp_id
+app.get('/campaign/:camp_id', async (req, res) => {
+  try {
+    const campId = req.params.camp_id;
+    const campaign = await Campaign.find({ camp_id: campId });
+    if (campaign.length === 0) {
+      return res.status(404).json({ error: 'No campaign found for the specified camp_id' });
+    }
+    res.json(campaign);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
