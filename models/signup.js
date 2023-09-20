@@ -6,6 +6,7 @@ const signupSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    unique: true, // Ensure email is unique
   },
   password: {
     type: String,
