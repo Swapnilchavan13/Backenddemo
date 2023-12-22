@@ -4,6 +4,9 @@ const businessSchema = new mongoose.Schema({
   media_id:{
     type: String,
   },
+  mi:{
+    type: String,
+  },
   businessName: {
     type: String,
   },

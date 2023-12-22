@@ -158,8 +158,6 @@ app.post('/book-data', async (req, res) => {
   }
 });
 
-
-
 // app.post('/upload', upload.single('upload'), async (req, res) => {
 //   const file = req.file;
 
@@ -178,7 +176,6 @@ app.post('/book-data', async (req, res) => {
 //     });
 
 //     await uploadedImage.save();
-
 //     res.status(200).json({ message: 'Image uploaded successfully.' });
 //   } catch (error) {
 //     console.error(error);
@@ -220,10 +217,8 @@ app.get('/uploaded-images', async (req, res) => {
   }
 });
 
-
 // Rest of your code for '/a', '/auth', and '/autha' routes
-
-    // console.log("Error:", error);
+// console.log("Error:", error);
 // Start the server
 connectDB().then(() => {
   app.listen(PORT, () => {
