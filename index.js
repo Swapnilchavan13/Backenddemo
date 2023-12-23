@@ -132,7 +132,6 @@ app.post('/imgandvid', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while saving the data.' });
   }
 });
-
 // Define a route for retrieving Imgandvid entries
 app.get('/imgandvid', async (req, res) => {
   try {
